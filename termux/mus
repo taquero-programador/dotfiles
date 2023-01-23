@@ -13,6 +13,7 @@ if [[ $(ls -A $dir) ]]; then
     fi
 else
     echo "Nada que hacer."
+    exit 0
 fi
 
 curl \
