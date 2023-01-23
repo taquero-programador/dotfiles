@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#set -x
+
+boost=$(ls /sdcard/Pictures/Boost | wc -l)
+fil=$(cat boost.txt)
+
+if [[ $boost -gt $fil ]]; then
+    proc=$( rclone copy -P /sdcard/Pictures/Boost megap:pics/reddit ) && ls /sdcard/Pictures/Boost | wc -l > boost.txt
+    if [[ $? -eq 0 ]]; then
+        tit="Title: Reddit local Done!"
+        message="Rclone backup done!!!"
+    else
+        tit="Title: Reddit Local Fail!"
+        message="Rclone backup fail!!! $proc"
+    fi
+else
+    echo "Nada que hacer."
+    exit 0
+fi
+
+curl \
+    -H "$tit" \
+    -H "Priority: urgent" \
+    -d "$message" \
+    ntfy.sh/change_url \
+    &> /dev/null

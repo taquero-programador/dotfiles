@@ -1,0 +1,22 @@
+#!/bin/bash
+
+dir="/sdcard/Music"
+
+if [[ $(ls -A $dir) ]]; then
+    rclone copy -P --transfers 1 /sdcard/Music mega:flac
+    if [[ $? -eq 0 ]]; then
+        title="Title: Rclone music rock"
+        message="Mega music is done!!!"
+    else
+        title="Title: Rclone music rock"
+        message="Mega music is fail!!!"
+    fi
+else
+    echo "Nada que hacer."
+fi
+
+curl \
+    -H "$title" \
+    -H "Priority: urgent" \
+    -d "$message" \
+    ntfy.sh/change_url &> /dev/null
