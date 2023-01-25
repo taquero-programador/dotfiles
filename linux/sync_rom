@@ -4,20 +4,20 @@ mrock=$(rclone lsf pcloud:musica/romanticas | wc -l)
 lrock=$(ls ~/Música/javier/romanticas | wc -l)
 
 if [[ $mrock -gt $lrock ]]; then
-    notify-send -t 5000 "Romanticas music is updating..."
+    notify-send -t 5000 "Romanticas music is being updated..."
     curl \
         -H "Title: Update music in $(uname -sn)" \
         -H "Priority: urgent" \
-        -d "Romanticas is updating..." \
-        ntfy.sh/XlainRoot93 &> /dev/null
+        -d "Romanticas is being updated..." \
+        ntfy.sh/change_url &> /dev/null
     proc=$(rclone sync -P pcloud:musica/romanticas ~/Música/javier/romanticas)
     if [[ $? -eq 0 ]]; then
         notify-send -t 5000 "Romanticas Music" "$(( $mrock-$lrock )) New song(s)!"
-        title="Romanticas sync in $(uname -sn)"
+        title="Romanticas is synchronized in $(uname -sn)"
         message="$(( $mrock-$lrock )) New song(s)!"
     else
         notify-send -t 5000 "Romanticas Music" "Algo salió mal!"
-        title="Romanticas sync in $(uname -sn)"
+        title="Romanticas is synchronized in $(uname -sn)"
         message="Algo salió mal! $proc"
     fi
 else
@@ -29,4 +29,4 @@ curl \
     -H "Title: $title" \
     -H "Priority: urgent" \
     -d "$message" \
-    ntfy.sh/XlainRoot93 &> /dev/null
+    ntfy.sh/change_url &> /dev/null
