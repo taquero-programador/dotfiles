@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# rock
+mrock=$(rclone lsf pcloud:musica/chidas | wc -l)
+lrock=$(ls ~/Música/javier/gpo-flac | wc -l)
+
+if [[ $mrock -gt $lrock ]]; then
+    notify-send -t 5000 "Chidas music is updating..."
+    curl \
+        -H "Title: Update music in $(uname -sn)" \
+        -H "Priority: urgent" \
+        -d "Chidas is updating..." \
+        ntfy.sh/change_url &> /dev/null
+    proc=$(rclone sync -P pcloud:musica/chidas ~/Música/javier/gpo-flac 2>&1)
+    if [[ $? -eq 0 ]]; then
+        notify-send -t 5000 "Chidas Music" "$(($mrock-$lrock)) New song(s)!"
+        title="Chidas sync in $(uname -sn)"
+        message="$(($mrock-$lrock)) New song(s)!"
+    else
+        notify-send -t 5000 "Chidas Music" "Algo salió mal!"
+        title="Chidas sync in $(uname -sn)"
+        message="Algo salió mal! $proc"
+    fi
+else
+    notify-send -t 5000 "Chidas sync" "Chidas is ok!"
+    exit 0
+fi
+
+curl \
+    -H "Title: $title" \
+    -H "Priority: urgent" \
+    -d "$message" \
+    ntfy.sh/change_url &> /dev/null
