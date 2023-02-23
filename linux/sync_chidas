@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mrock=$(rclone lsf pcloud:musica/chidas | wc -l)
-lrock=$(ls ~/Música/javier/gpo-flac | wc -l)
+lrock=$(ls ~/Música/javier/chidas | wc -l)
 
 if [[ $mrock -gt $lrock ]]; then
     notify-send -t 5000 "Chidas music is being updated..."
@@ -10,7 +10,7 @@ if [[ $mrock -gt $lrock ]]; then
         -H "Priority: urgent" \
         -d "Chidas is being updated..." \
         ntfy.sh/change_url &> /dev/null
-    proc=$(rclone sync -P pcloud:musica/chidas ~/Música/javier/gpo-flac)
+    proc=$(rclone sync -P pcloud:musica/chidas ~/Música/javier/chidas)
     if [[ $? -eq 0 ]]; then
         notify-send -t 5000 "Chidas Music" "$(( $mrock-$lrock )) New song(s)!"
         title="Chidas is synchronized in $(uname -sn)"

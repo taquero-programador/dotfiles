@@ -1,0 +1,18 @@
+#!/bin/bash
+
+rsync -azuhPe "ssh" --delete debianbk:/home/user/Música/javier/ ~/Música/
+
+if [[ $? -eq 0 ]]; then
+    title="Title: Rsync"
+    message="Música está sincronizada!"
+else
+    title="Title: Rsync"
+    message="Algo salió mal!"
+fi
+
+curl \
+    -H "$title" \
+    -H "Priority: urgent" \
+    -d "$message" \
+    ntfy.sh/change_url &> /dev/null
+
