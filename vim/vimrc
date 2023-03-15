@@ -22,8 +22,8 @@ call plug#begin()
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'tomasr/molokai'
-Plug 'rust-lang/rust.vim'
 Plug 'lervag/vimtex'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 let mapleader = ","

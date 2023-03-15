@@ -1,0 +1,74 @@
+### Directories ###
+lyrics_directory  = ~/.ncmpcpp/lyrics
+#mpd_music_dir     = /home/user/Music
+mpd_connection_timeout = 60
+
+### Visualizer ###
+visualizer_data_source = /tmp/mpd.fifo
+visualizer_output_name = "mpd_visualizer"
+visualizer_in_stereo = "yes"
+# buffer_time = 30
+# spectrum/ellipse/wave_filled analyzer or wave
+visualizer_type = "ellipse"
+visualizer_look = ●●
+
+### Appearance
+colors_enabled = "yes"
+user_interface = alternative
+
+### Behaviour ###
+execute_on_song_change = songinfo # bash in /usr/local/bin/songinfo
+message_delay_time = 1
+playlist_disable_highlight_delay = 2
+ignore_leading_the = "yes"
+allow_for_physical_item_deletion = "no"
+
+### Playlist
+song_columns_list_format = "$L(35)[white]{a} (50)[red]{t} $R(9)[cyan]{l}"
+now_playing_prefix = "$3>> "
+now_playing_suffix = "$8$/b"
+playlist_display_mode = "columns" (classic/columns)
+autocenter_mode = "yes"
+centered_cursor = "yes"
+cyclic_scrolling = "yes"
+mouse_list_scroll_whole_page = "no"
+#song_list_format = "{$8$9}{[%l] >> }{%t }$R{%a - %b}"
+song_list_format = " $0$8$8%l$0$8 (|$7 $7%a$7 (|$7 $6%t( $R (%b("
+
+song_library_format = "{%n > }{%t}|{%f}"
+
+# Bars
+song_status_format = "{%a - }{%t - }{%b}"
+#progressbar_look = "|> "
+progressbar_look = "─╼·"
+#"━━╸"
+titles_visibility = "yes"
+header_visibility = "yes"
+statusbar_visibility = "yes" 
+
+# Browser
+browser_playlist_prefix = "[plist »$9 "
+browser_display_mode = "classic" (classic/columns)
+
+# Colors
+discard_colors_if_item_is_selected = "yes"
+header_window_color = "black"
+volume_color = "cyan"
+state_line_color = "red"
+state_flags_color = "green"
+main_window_color = "blue"
+color1 = "cyan"
+color2 = "black"
+progressbar_color = "red"
+statusbar_color = "black"
+
+# Others
+song_window_title_format = "► {%a > }{%t}|{%f}"
+search_engine_display_mode = "columns" (classic/columns)
+follow_now_playing_lyrics = "yes"
+
+# added
+display_bitrate = yes
+startup_screen = visualizer
+display_remaining_time = no
+mpd_crossfade_time = 3
