@@ -25,8 +25,8 @@ allow_for_physical_item_deletion = "no"
 
 ### Playlist
 song_columns_list_format = "$L(35)[white]{a} (50)[red]{t} $R(9)[cyan]{l}"
-now_playing_prefix = "$3>> "
-now_playing_suffix = "$8$/b"
+now_playing_prefix = "$r$b$3>> "
+now_playing_suffix = "$8$/b$/r"
 playlist_display_mode = "columns" (classic/columns)
 autocenter_mode = "yes"
 centered_cursor = "yes"
@@ -52,7 +52,7 @@ browser_display_mode = "classic" (classic/columns)
 
 # Colors
 discard_colors_if_item_is_selected = "yes"
-header_window_color = "black"
+header_window_color = "cyan"
 volume_color = "cyan"
 state_line_color = "red"
 state_flags_color = "green"
