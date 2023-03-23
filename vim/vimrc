@@ -11,6 +11,13 @@ let g:NERDTreeWinPos = "left"
 set runtimepath+=~/.vim_runtime
 set encoding=UTF-8
 set updatetime=100
+" indent plugin
+" let g:indentLine_setColors = 0
+let g:indentLine_color_term = 239
+let g:indentLine_defaultGroup = 'SpecialKey'
+"let g:indentLine_char = '¦'
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_enabled = 1
 
 let g:vimtex_view_method = 'zathura'
 let g:vimtex_view_general_viewer = 'okular'
@@ -24,6 +31,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tomasr/molokai'
 Plug 'lervag/vimtex'
 Plug 'airblade/vim-gitgutter'
+Plug 'yggdroot/indentline'
 call plug#end()
 
 let mapleader = ","
@@ -39,8 +47,9 @@ catch
 endtry
 colorscheme molokai
 
-if exists('+termguicolors')
-    let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
-    let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-    set termguicolors
-endif
+" comentar todo el if en caso de error
+"if exists('+termguicolors')
+"let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+"let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+"set termguicolors
+"endif
