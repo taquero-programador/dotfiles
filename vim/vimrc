@@ -34,6 +34,9 @@ let maplocalleader = ","
 nnoremap <silent> <C-d> :NERDTreeToggle<CR>
 nnoremap <silent> <C-f> :Files<CR>
 nnoremap <silent> <Leader>f :Rg<CR>
+" floaterminal
+nnoremap <silent> <C-t> :FloatermNew<CR>
+nnoremap <silent> <C-h> :FloatermToggle<CR>
 
 call plug#begin()
 Plug 'ryanoasis/vim-devicons'
@@ -44,6 +47,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'yggdroot/indentline'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+Plug 'voldikss/vim-floaterm'
 call plug#end()
 
 source ~/.vim_runtime/vimrcs/basic.vim
