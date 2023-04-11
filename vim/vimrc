@@ -36,7 +36,6 @@ nnoremap <silent> <C-f> :Files<CR>
 nnoremap <silent> <Leader>f :Rg<CR>
 " floaterminal
 nnoremap <silent> <C-t> :FloatermNew<CR>
-nnoremap <silent> <C-h> :FloatermToggle<CR>
 
 call plug#begin()
 Plug 'ryanoasis/vim-devicons'
