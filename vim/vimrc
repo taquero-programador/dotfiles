@@ -34,7 +34,7 @@ let maplocalleader = ","
 nnoremap <silent> <C-d> :NERDTreeToggle<CR>
 nnoremap <silent> <C-f> :Files<CR>
 nnoremap <silent> <Leader>f :Rg<CR>
-" floaterminal
+" terminal
 nnoremap <silent> <C-t> :FloatermNew<CR>
 
 call plug#begin()
@@ -47,6 +47,7 @@ Plug 'yggdroot/indentline'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'voldikss/vim-floaterm'
+Plug 'pR0Ps/molokai-dark'
 call plug#end()
 
 source ~/.vim_runtime/vimrcs/basic.vim
@@ -57,11 +58,11 @@ try
   source ~/.vim_runtime/my_configs.vim
 catch
 endtry
-colorscheme molokai
+colorscheme molokai-dark
 
 " comentar todo el if en caso de error
-if exists('+termguicolors')
-    let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
-    let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-    set termguicolors
-endif
+"if exists('+termguicolors')
+"    let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+"    let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+"    set termguicolors
+"endif
