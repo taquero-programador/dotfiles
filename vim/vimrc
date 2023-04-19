@@ -3,6 +3,13 @@
 set number
 syntax enable
 filetype plugin indent on
+set tabstop=4 " number os visual spaces per TAB
+set softtabstop=4 " number of spaces in tab when editing
+set expandtab " tabs are spaces
+set wildmenu " visual autocomplete for command menu
+set lazyredraw " redraw only when need to
+set incsearch " search as characters are entered
+set hlsearch " highlight matches
 set autoindent
 set cursorline
 set showmatch
@@ -36,6 +43,10 @@ nnoremap <silent> <C-f> :Files<CR>
 nnoremap <silent> <Leader>f :Rg<CR>
 " terminal
 nnoremap <silent> <C-t> :FloatermNew<CR>
+" deja de resaltar la búsqueda
+nnoremap <silent> <C-s> :nohlsearch<CR>
+" guarda la sesión como Session.vim
+nnoremap <silent> <C-a> :mksession<CR>
 
 call plug#begin()
 Plug 'ryanoasis/vim-devicons'
@@ -48,6 +59,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'voldikss/vim-floaterm'
 Plug 'pR0Ps/molokai-dark'
+Plug 'junegunn/goyo.vim'
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 source ~/.vim_runtime/vimrcs/basic.vim
@@ -61,8 +74,8 @@ endtry
 colorscheme molokai-dark
 
 " comentar todo el if en caso de error
-"if exists('+termguicolors')
-"    let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
-"    let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-"    set termguicolors
-"endif
+if exists('+termguicolors')
+    let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+    let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+    set termguicolors
+endif
