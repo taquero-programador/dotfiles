@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # constructor
 tmx_call() {
     tmux new -d -s debian -n vim
