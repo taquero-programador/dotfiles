@@ -38,29 +38,45 @@ let g:vimtex_compiler_method = 'latexrun'
 let maplocalleader = ","
 " fzf
 " sudo apt install fpz ripgrep
+" show directory in right
 nnoremap <silent> <C-d> :NERDTreeToggle<CR>
-nnoremap <silent> <C-f> :Files<CR>
+" fzf :Files
+nnoremap <silent> <C-z> :Files<CR>
+" fzf \ + f
 nnoremap <silent> <Leader>f :Rg<CR>
 " terminal
-nnoremap <silent> <C-t> :FloatermNew<CR>
+nnoremap <silent> <C-t> :FloatermNew --width=0.85 --height=0.95<CR>
 " deja de resaltar la búsqueda
-nnoremap <silent> <C-s> :nohlsearch<CR>
+nnoremap <silent> <C-x> :nohlsearch<CR>
 " guarda la sesión como Session.vim
 nnoremap <silent> <C-a> :mksession<CR>
+" change beetwen tabs
+nnoremap <silent> <leader>1 :tabn1<CR>
+nnoremap <silent> <leader>2 :tabn2<CR>
+nnoremap <silent> <leader>3 :tabn3<CR>
+nnoremap <silent> <leader>4 :tabn4<CR>
+nnoremap <silent> <leader>5 :tabn5<CR>
+nnoremap <silent> <leader>6 :tabn6<CR>
+nnoremap <silent> <leader>7 :tabn7<CR>
+nnoremap <silent> <leader>8 :tabn8<CR>
+nnoremap <silent> <leader>9 :tabn9<CR>
+" comments lines gcc (one line), gcap (group) and gcu (uncomment)
+" Ctrl + n : selecciona la misma palabra. d elimina la palabra
+" Ctrl + Up/Down : selecciona líneas. Q para quitar selección de línea
+" Shift + Arrows : selecciona letra por letra
 
 call plug#begin()
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'tomasr/molokai'
 Plug 'lervag/vimtex'
-Plug 'airblade/vim-gitgutter'
 Plug 'yggdroot/indentline'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'voldikss/vim-floaterm'
 Plug 'pR0Ps/molokai-dark'
-Plug 'junegunn/goyo.vim'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 call plug#end()
 
 source ~/.vim_runtime/vimrcs/basic.vim
@@ -72,8 +88,10 @@ try
 catch
 endtry
 colorscheme molokai-dark
+let g:lightline = {
+      \ 'colorscheme': 'ayu_dark',
+      \ }
 
-" comentar todo el if en caso de error
 if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
