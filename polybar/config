@@ -1,0 +1,498 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+
+[colors]
+background = #282A2E
+background-alt = #373B41
+foreground = #C5C8C6
+primary = #F0C674
+secondary = #8ABEB7
+alert = #A54242
+disabled = #707880
+
+white = #FFFFFF
+black = #000000
+red = #EC7875
+pink = #EC6798
+purple = #BE78D1
+blue = #75A4CD
+cyan = #00C7DF
+teal = #00B19F
+green = #61C766
+lime = #B9C244
+yellow = #EBD369
+amber = #EDB83F
+orange = #E57C46
+brown = #AC8476
+gray = #9E9E9E
+indigo = #6C77BB
+blue-gray = #6D8895
+
+;==========================================================
+[bar/example]
+width = 100%
+height = 24pt
+radius = 6
+
+; dpi = 96
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3pt
+
+border-size = 4pt
+border-color = #00000000
+
+padding-left = 0
+padding-right = 1
+
+module-margin = 1
+
+separator = |
+separator-foreground = ${colors.disabled}
+
+;font-0 = monospace:size=10.2;2
+font-0 = "Iosevka Nerd Font:size=10;4"
+font-1 = "feather:size=10;3"
+
+modules-left = menu xworkspaces mpd xwindow
+modules-right = alsa battery wlan eth date
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+enable-ipc = true
+
+; tray-position = right
+
+; wm-restack = generic
+; wm-restack = bspwm
+; wm-restack = i3
+
+; override-redirect = true
+
+;==========================================================
+[module/menu]
+type = custom/menu
+
+; If true, <label-toggle> will be to the left of the menu items (default).
+; If false, it will be on the right of all the items.
+expand-right = true
+
+; "menu-LEVEL-N" has the same properties as "label-NAME" with
+; the additional "exec" property
+;
+; Available exec commands:
+;   menu-open-LEVEL
+;   menu-close
+; Other commands will be executed using "/usr/bin/env sh -c $COMMAND"
+menu-0-0 ="  Menu | "
+menu-0-0-background = ${color.background-alt}
+menu-0-0-exec = ~/.config/polybar/blocks/scripts/launcher.sh &
+
+menu-0-1 =" Files | "
+menu-0-1-background = ${color.background-alt}
+menu-0-1-exec = thunar &
+
+menu-0-2 =" Terminal | "
+menu-0-2-background = ${color.background-alt}
+menu-0-2-exec = termite &
+
+menu-0-3 =" Browser "
+menu-0-3-background = ${color.background-alt}
+menu-0-3-exec = firefox &
+
+; Available tags:
+;   <label-toggle> (default) - gets replaced with <label-(open|close)>
+;   <menu> (default)
+; Note that if you use <label-toggle> you must also include
+; the definition for <label-open>
+
+format = <label-toggle><menu>
+format-overline = ${color.background}
+format-underline = ${color.background}
+
+label-open = 
+label-open-background = ${color.yellow}
+label-open-padding = 1
+label-close =  
+label-close-background = ${color.red}
+label-close-padding = 1
+
+; Optional item separator
+; Default: none
+;label-separator = " | "
+
+
+
+;==========================================================
+[module/xworkspaces]
+type = internal/xworkspaces
+
+label-active = %name%
+label-active-background = ${colors.background-alt}
+label-active-underline= ${colors.primary}
+label-active-padding = 1
+
+label-occupied = %name%
+label-occupied-padding = 1
+
+label-urgent = %name%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 1
+
+label-empty = %name%
+label-empty-foreground = ${colors.disabled}
+label-empty-padding = 1
+
+;==========================================================
+[module/mpd]
+type = internal/mpd
+
+;host = 127.0.0.1
+;port = 6600
+;password = pass
+
+interval = 2
+
+; Available tags:
+;   <label-song> (default)
+;   <label-time>
+;   <bar-progress>
+;   <toggle> - gets replaced with <icon-(pause|play)>
+;   <toggle-stop> - gets replaced with <icon-(stop|play)>
+;   <icon-random>
+;   <icon-repeat>
+;   <icon-repeatone> (deprecated)
+;   <icon-single> - Toggle playing only a single song. Replaces <icon-repeatone>
+;   <icon-consume>
+;   <icon-prev>
+;   <icon-stop>
+;   <icon-play>
+;   <icon-pause>
+;   <icon-next>
+;   <icon-seekb>
+;   <icon-seekf>
+format-online = <icon-prev><toggle> <label-song> <icon-next>
+;format-playing = ${self.format-online}
+;format-paused = ${self.format-online}
+;format-stopped = ${self.format-online}
+
+; Available tags:
+;   <label-offline>
+; Default: ""
+;format-offline = <label-offline>
+
+; Available tokens:
+;   %artist%
+;   %album-artist%
+;   %album%
+;   %date%
+;   %title%
+; Default: %artist% - %title%
+label-song = %title%
+
+; Available tokens:
+;   %elapsed%
+;   %total%
+; Default: %elapsed% / %total%
+;label-time = %elapsed% / %total%
+
+; Available tokens:
+;   None
+label-offline = mpd is offline
+
+; Only applies if <icon-X> is used
+icon-play = 
+icon-pause = 
+icon-stop = " "
+icon-prev = " "
+icon-next = " "
+icon-seekb = 
+icon-seekf = 
+icon-random = 
+icon-repeat = 
+icon-repeatone = 
+icon-single = 
+icon-consume = 
+
+; Used to display the state of random/repeat/repeatone/single
+; Only applies if <icon-[random|repeat|repeatone|single]> is used
+toggle-on-foreground = #ff
+toggle-off-foreground = #55
+
+; Only applies if <bar-progress> is used
+bar-progress-width = 45
+bar-progress-indicator = |
+bar-progress-fill = ─
+bar-progress-empty = ─
+
+;==========================================================
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:10:...%
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /
+
+label-mounted = %{F#F0C674}%mountpoint%%{F-} %percentage_used%%
+
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.disabled}
+
+;==========================================================
+[module/alsa]
+type = internal/alsa
+
+; Soundcard to be used
+; Usually in the format hw:# where # is the card number
+; You can find the different card numbers in `/proc/asound/cards`
+master-soundcard = default
+speaker-soundcard = default
+headphone-soundcard = default
+
+master-mixer = Master
+
+;format-volume-prefix = "VOL "
+format-volume-prefix-foreground = ${colors.primary}
+format-volume = <ramp-volume><label-volume>
+interval = 2
+
+format-muted = <label-muted>
+format-muted-prefix = 
+format-muted-prefix-padding = 1
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-padding = 1
+
+label-volume = %percentage%%
+
+ramp-headphones-0 = 
+ramp-headphones-padding = 1
+
+;==========================================================
+[module/battery]
+type = internal/battery
+
+full-at = 99
+
+low-at = 22
+
+battery = BAT0
+adapter = ADP1
+
+poll-interval = 2
+
+time-format = %H:%M
+
+;time-form; Available tags:
+;   <label-charging> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;   <animation-charging>
+format-charging = <label-charging>
+format-charging-prefix = ""
+format-charging-prefix-background = ${colors.green}
+format-charging-prefix-padding = 1
+format-charging-overline = ${colors.background}
+format-charging-underline = ${colors.background}
+
+; Available tags:
+;   <label-discharging> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;   <animation-discharging>
+format-discharging = <label-discharging>
+format-discharging-prefix = ""
+format-discharging-prefix-background = ${colors.pink}
+format-discharging-prefix-padding = 1
+format-discharging-overline = ${colors.background}
+format-discharging-underline = ${colors.background}
+
+; Available tags:
+;   <label-full> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+format-full = <label-full>
+format-full-prefix = ""
+format-full-prefix-background = ${colors.red}
+format-full-prefix-padding = 1
+format-full-overline = ${colors.background}
+format-full-underline = ${colors.background}
+
+; Available tokens:
+;   %percentage% (default)
+;   %time%
+;   %consumption% (shows current charge rate in watts)
+label-charging = %percentage%%
+label-charging-padding = 1
+
+; Available tokens:
+;   %percentage% (default)
+;   %time%
+;   %consumption% (shows current discharge rate in watts)
+label-discharging = %percentage%%
+label-discharging-padding = 1
+
+; Available tokens:
+;   %percentage% (default)
+label-full = Full
+label-full-padding = 1
+
+; Only applies if <ramp-capacity> is used
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+; Only applies if <bar-capacity> is used
+;bar-capacity-width = 10
+
+; Only applies if <animation-charging> is used
+animation-charging-0 = 
+animation-charging-1 = 
+
+; Framerate in milliseconds
+animation-charging-framerate = 750
+
+;==========================================================
+;[module/xkeyboard]
+;type = internal/xkeyboard
+;blacklist-0 = num lock
+;
+;label-layout = %layout%
+;label-layout-foreground = ${colors.primary}
+;
+;label-indicator-padding = 2
+;label-indicator-margin = 1
+;label-indicator-foreground = ${colors.background}
+;label-indicator-background = ${colors.secondary}
+
+;==========================================================
+[module/memory]
+type = internal/memory
+interval = 2
+;format = <label>
+format-prefix = 
+format-prefix-background = ${colors.brown}
+format-prefix-padding = 1
+format-overline = ${colors.background}
+format-underline = ${colors.background}
+
+; Available tokens:
+;   %percentage_used% (default)
+;   %percentage_free%
+;   %gb_used%
+;   %gb_free%
+;   %gb_total%
+;   %mb_used%
+;   %mb_free%
+;   %mb_total%
+;   %percentage_swap_used%
+;   %percentage_swap_free%
+;   %mb_swap_total%
+;   %mb_swap_free%
+;   %mb_swap_used%
+;   %gb_swap_total%
+;   %gb_swap_free%
+;   %gb_swap_used%
+
+label = "%mb_used%"
+label-padding = 1
+
+;==========================================================
+[module/cpu]
+type = internal/cpu
+interval = 2
+
+; Available tags:
+;   <label> (default)
+;   <bar-load>
+;   <ramp-load>
+;   <ramp-coreload>
+;;format = <label> <ramp-coreload>
+format = <label>
+format-prefix = 
+format-prefix-padding = 1
+format-overline = ${colors.background}
+format-underline = ${colors.background}
+
+; Available tokens:
+;   %percentage% (default) - total cpu load averaged over all cores
+;   %percentage-sum% - Cumulative load on all cores
+;   %percentage-cores% - load percentage for each core
+;   %percentage-core[1-9]% - load percentage for specific core
+label = "%percentage%%"
+label-padding = 1
+
+;==========================================================
+[network-base]
+type = internal/network
+interval = 5
+format-connected = <label-connected>
+format-disconnected = <label-disconnected>
+label-disconnected = %{F#F0C674}%ifname%%{F#707880} #N/A
+
+;==========================================================
+[module/wlan]
+inherit = network-base
+interface-type = wireless
+interface = wlp1s0
+label-connected = %{F#F0C674}%essid%%{F-} %local_ip%
+format-connected-prefix = 
+format-connected-prefix-padding = 1
+
+format-disconnected = <label-disconnected>
+format-disconnected-prefix = 
+format-disconnected-prefix-padding = 1
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+
+;==========================================================
+[module/eth]
+inherit = network-base
+interface-type = wired
+interface = enp2s0f5
+label-connected = %{F#F0C674}%ifname%%{F-} %local_ip%
+
+;==========================================================
+[module/date]
+type = internal/date
+interval = 1
+
+date = %m-%d-%H:%M
+date-alt = %Y-%m-%d %H:%M:%S
+
+label = %date%
+label-foreground = ${colors.primary}
+
+;==========================================================
+[settings]
+screenchange-reload = true
+pseudo-transparency = true
+
+; vim:ft=dosini
