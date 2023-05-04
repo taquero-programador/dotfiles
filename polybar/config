@@ -271,7 +271,7 @@ format-charging-underline = ${colors.background}
 ;   <animation-discharging>
 format-discharging = <label-discharging>
 format-discharging-prefix = ""
-format-discharging-prefix-background = ${colors.pink}
+format-discharging-prefix-background = ${colors.amber}
 format-discharging-prefix-padding = 1
 format-discharging-overline = ${colors.background}
 format-discharging-underline = ${colors.background}
