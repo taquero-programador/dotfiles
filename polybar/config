@@ -152,7 +152,7 @@ format-online = <icon-prev><toggle> <label-song> <icon-next>
 ;   %date%
 ;   %title%
 ; Default: %artist% - %title%
-label-song = "[%artist:0:10%]-%title%"
+label-song = "%title:0:20%"
 
 ; Available tokens:
 ;   %elapsed%
