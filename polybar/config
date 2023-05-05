@@ -68,10 +68,10 @@ separator = |
 separator-foreground = ${colors.disabled}
 
 ;font-0 = monospace:size=10.2;2
-font-0 = "Iosevka Nerd Font:size=10;4"
-font-1 = "feather:size=10;3"
+font-0 = "Iosevka Nerd Font:size=10.1;4"
+font-1 = "feather:size=10.2;3"
 
-modules-left = xworkspaces mpd xwindow
+modules-left = xworkspaces mpd
 modules-right = alsa battery wlan eth date
 
 cursor-click = pointer
@@ -152,7 +152,7 @@ format-online = <icon-prev><toggle> <label-song> <icon-next>
 ;   %date%
 ;   %title%
 ; Default: %artist% - %title%
-label-song = %title%
+label-song = "[%artist:0:10%]-%title%"
 
 ; Available tokens:
 ;   %elapsed%
@@ -430,7 +430,7 @@ label-connected = %{F#F0C674}%ifname%%{F-} %local_ip%
 type = internal/date
 interval = 1
 
-date = %m-%d-%H:%M
+date = "%y-%b-%d %H:%M  "
 date-alt = %Y-%m-%d %H:%M:%S
 
 label = %date%

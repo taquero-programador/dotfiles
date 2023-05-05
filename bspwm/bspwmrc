@@ -3,6 +3,8 @@
 $HOME/.config/polybar/launch.sh
 pgrep -x sxhkd > /dev/null || sxhkd &
 
+nitrogen --restore &
+
 bspc monitor -d I II III
 
 bspc config border_width         2
