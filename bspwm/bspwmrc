@@ -1,11 +1,23 @@
-#! /bin/sh
+#! /bin/bash
 
 $HOME/.config/polybar/launch.sh
 pgrep -x sxhkd > /dev/null || sxhkd &
 
 nitrogen --restore &
 
-bspc monitor -d I II III
+bspc monitor LVDS1 -d I II III
+
+if [[ $(xrandr -q | grep -i "vga1 connected") ]]; then
+    xrandr --output LVDS1 --primary --mode 1024x600 --rotate normal --output VGA1 --mode 1024x768 --rotate normal --right-of LVDS1
+
+    bspc monitor VGA1 -d IV
+#else
+#    xrandr --output VGA1 --off
+#    while bspc node @4 --kill; do
+#    done
+#    bspc desktop -r IV
+#    bspc monitor VGA1 -r
+fi
 
 bspc config border_width         2
 bspc config window_gap          12
