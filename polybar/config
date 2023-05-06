@@ -9,10 +9,8 @@
 ;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
 ;
 ;
-;   To learn more about how to configure Polybar
-;   go to https://github.com/polybar/polybar
+;   https://github.com/taquero-programador/dotfiles
 ;
-;   The README contains a lot of information
 ;
 ;==========================================================
 
@@ -47,8 +45,8 @@ blue-gray = #6D8895
 [bar/example]
 monitor = ${env:MONITOR:}
 width = 100%
-height = 24pt
-radius = 6
+height = 30pt
+radius = 2.4
 
 ; dpi = 96
 
@@ -61,7 +59,7 @@ border-size = 4pt
 border-color = #00000000
 
 padding-left = 0
-padding-right = 1
+padding-right = 0
 
 module-margin = 1
 
@@ -69,10 +67,12 @@ separator = |
 separator-foreground = ${colors.disabled}
 
 ;font-0 = monospace:size=10.2;2
-font-0 = "Iosevka Nerd Font:size=10.1;4"
-font-1 = "feather:size=10.2;3"
+;font-0 = "Iosevka Nerd Font:size=10.1;4"
+font-0 = "undefined medium:size=9.4;2"
+font-1 = "feather:style=bold;size=10;3"
 
 modules-left = xworkspaces mpd
+;modules-center =
 modules-right = alsa battery wlan eth date
 
 cursor-click = pointer
@@ -116,7 +116,7 @@ type = internal/mpd
 ;port = 6600
 ;password = pass
 
-interval = 2
+interval = 1
 
 ; Available tags:
 ;   <label-song> (default)
@@ -136,7 +136,7 @@ interval = 2
 ;   <icon-next>
 ;   <icon-seekb>
 ;   <icon-seekf>
-format-online = <icon-prev><toggle> <label-song> <icon-next>
+format-online = <toggle> <label-time><label-song><icon-next>
 ;format-playing = ${self.format-online}
 ;format-paused = ${self.format-online}
 ;format-stopped = ${self.format-online}
@@ -166,8 +166,8 @@ label-song = "%title:0:20%"
 label-offline = mpd is offline
 
 ; Only applies if <icon-X> is used
-icon-play = 
-icon-pause = 
+icon-play = %{F#EC7875}%{F-}
+icon-pause = %{F#61C766}%{F-}
 icon-stop = " "
 icon-prev = " "
 icon-next = " "
@@ -225,12 +225,12 @@ format-volume = <ramp-volume><label-volume>
 interval = 2
 
 format-muted = <label-muted>
-format-muted-prefix = 
+format-muted-prefix = %{F#EC7875}%{F-}
 format-muted-prefix-padding = 1
 
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
+ramp-volume-0 = %{F#61C766}%{F-}
+ramp-volume-1 = %{F#EDB83F}%{F-}
+ramp-volume-2 = %{F#EC7875}%{F-}
 ramp-volume-padding = 1
 
 label-volume = %percentage%%
@@ -259,11 +259,8 @@ time-format = %H:%M
 ;   <ramp-capacity>
 ;   <animation-charging>
 format-charging = <label-charging>
-format-charging-prefix = ""
-format-charging-prefix-background = ${colors.green}
-format-charging-prefix-padding = 1
-format-charging-overline = ${colors.background}
-format-charging-underline = ${colors.background}
+format-charging-prefix = %{F#61c766}%{F-}
+format-charging-prefix-padding = 0
 
 ; Available tags:
 ;   <label-discharging> (default)
@@ -271,22 +268,16 @@ format-charging-underline = ${colors.background}
 ;   <ramp-capacity>
 ;   <animation-discharging>
 format-discharging = <label-discharging>
-format-discharging-prefix = ""
-format-discharging-prefix-background = ${colors.amber}
-format-discharging-prefix-padding = 1
-format-discharging-overline = ${colors.background}
-format-discharging-underline = ${colors.background}
+format-discharging-prefix = %{F#EBD369}%{F-}
+format-discharging-prefix-padding = 0
 
 ; Available tags:
 ;   <label-full> (default)
 ;   <bar-capacity>
 ;   <ramp-capacity>
 format-full = <label-full>
-format-full-prefix = ""
-format-full-prefix-background = ${colors.red}
-format-full-prefix-padding = 1
-format-full-overline = ${colors.background}
-format-full-underline = ${colors.background}
+format-full-prefix = %{F#EC7875}%{F-}
+format-full-prefix-padding = 0
 
 ; Available tokens:
 ;   %percentage% (default)
@@ -379,12 +370,10 @@ interval = 2
 ;   <bar-load>
 ;   <ramp-load>
 ;   <ramp-coreload>
-;;format = <label> <ramp-coreload>
+;format = <label> <ramp-coreload>
 format = <label>
 format-prefix = 
 format-prefix-padding = 1
-format-overline = ${colors.background}
-format-underline = ${colors.background}
 
 ; Available tokens:
 ;   %percentage% (default) - total cpu load averaged over all cores
@@ -400,19 +389,21 @@ type = internal/network
 interval = 5
 format-connected = <label-connected>
 format-disconnected = <label-disconnected>
-label-disconnected = %{F#F0C674}%ifname%%{F#707880} #N/A
+;label-disconnected = %{F#F0C674}%ifname%%{F#707880} #N/A
+label-disconnected = %{F#F0C674}%ifname%%{F#707880}
 
 ;==========================================================
 [module/wlan]
 inherit = network-base
 interface-type = wireless
 interface = wlp1s0
-label-connected = %{F#F0C674}%essid%%{F-} %local_ip%
-format-connected-prefix = 
+;label-connected = %{F#F0C674}%essid%%{F-} %local_ip%
+label-connected = %{F#F0C674}%essid%%{F-}
+format-connected-prefix = %{F#61C766}%{F-}
 format-connected-prefix-padding = 1
 
-format-disconnected = <label-disconnected>
-format-disconnected-prefix = 
+;format-disconnected = <label-disconnected>
+format-disconnected-prefix = %{F#EC7875}%{F-}
 format-disconnected-prefix-padding = 1
 
 ramp-signal-0 = 
@@ -431,7 +422,7 @@ label-connected = %{F#F0C674}%ifname%%{F-} %local_ip%
 type = internal/date
 interval = 1
 
-date = "%y-%b-%d %H:%M  "
+date = "%y-%b-%d %H:%M "
 date-alt = %Y-%m-%d %H:%M:%S
 
 label = %date%

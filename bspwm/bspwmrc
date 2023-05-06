@@ -5,18 +5,12 @@ pgrep -x sxhkd > /dev/null || sxhkd &
 
 nitrogen --restore &
 
-bspc monitor LVDS1 -d I II III
+bspc monitor LVDS1 -d 1 2 3
 
 if [[ $(xrandr -q | grep -io "vga1 connected") ]]; then
     xrandr --output LVDS1 --primary --mode 1024x600 --rotate normal --rate 60.00 --output VGA1 --mode 1024x768 --rotate normal --rate 60.00 --right-of LVDS1
 
-    bspc monitor VGA1 -d IV
-#else
-#    xrandr --output VGA1 --off
-#    while bspc node @4 --kill; do
-#    done
-#    bspc desktop -r IV
-#    bspc monitor VGA1 -r
+    bspc monitor VGA1 -d 4
 fi
 
 bspc config border_width         2
