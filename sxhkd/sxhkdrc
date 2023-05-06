@@ -6,11 +6,11 @@
 super + Return
 	xfce4-terminal
 
-# program launcher
+# program launcher (win + Enter)
 super + @space
-	dmenu_run
+	ulauncher
 
-# make sxhkd reload its configuration files:
+# make sxhkd reload its configuration files: (win + Esc)
 super + Escape
 	pkill -USR1 -x sxhkd
 
@@ -18,15 +18,15 @@ super + Escape
 # bspwm hotkeys
 #
 
-# quit/restart bspwm
+# quit/restart bspwm (win + Alt + q or r)
 super + alt + {q,r}
 	bspc {quit,wm -r}
 
-# close and kill
+# close and kill (win + w)
 super + {_,shift + }w
 	bspc node -{c,k}
 
-# alternate between the tiled and monocle layout
+# cambia a modo completo (win + m)
 super + m
 	bspc desktop -l next
 
@@ -34,7 +34,7 @@ super + m
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
 
-# swap the current node and the biggest window
+# cambia posición a la ventana más grande
 super + g
 	bspc node -s biggest.window
 
@@ -54,7 +54,7 @@ super + ctrl + {m,x,y,z}
 # focus/swap
 #
 
-# focus the node in the given direction
+# cambia la posición de la ventana (win + Shift + h, j, k or l)
 super + {_,shift + }{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
 
@@ -62,7 +62,7 @@ super + {_,shift + }{h,j,k,l}
 super + {p,b,comma,period}
 	bspc node -f @{parent,brother,first,second}
 
-# focus the next/previous window in the current desktop
+# cambia entre ventanas (win + Shift + c)
 super + {_,shift + }c
 	bspc node -f {next,prev}.local.!hidden.window
 
@@ -70,17 +70,18 @@ super + {_,shift + }c
 super + bracket{left,right}
 	bspc desktop -f {prev,next}.local
 
-# focus the last node/desktop
+# cambia entre monitores (win + Tab) historico
 super + {grave,Tab}
 	bspc {node,desktop} -f last
 
-# focus the older or newer node in the focus history
+# cambia entre ventanas en orden historico (win + o or i)
+# i adelante y o atrás
 super + {o,i}
 	bspc wm -h off; \
 	bspc node {older,newer} -f; \
 	bspc wm -h on
 
-# focus or send to the given desktop
+# envía la ventana al monitor seleccionado (win + Shift + número)
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
@@ -88,11 +89,11 @@ super + {_,shift + }{1-9,0}
 # preselect
 #
 
-# preselect the direction
+# muesta una previa selección donde se colocará la vetana nueva
 super + ctrl + {h,j,k,l}
 	bspc node -p {west,south,north,east}
 
-# preselect the ratio
+# dimensión de la nueva ventana en combinación con la de arriba
 super + ctrl + {1-9}
 	bspc node -o 0.{1-9}
 
@@ -108,11 +109,11 @@ super + ctrl + shift + space
 # move/resize
 #
 
-# expand a window by moving one of its side outward
+# expande ventana seleccionada
 super + alt + {h,j,k,l}
 	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
 
-# contract a window by moving one of its side inward
+# reduce ventana seleccionada
 super + alt + shift + {h,j,k,l}
 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 

@@ -7,8 +7,8 @@ nitrogen --restore &
 
 bspc monitor LVDS1 -d I II III
 
-if [[ $(xrandr -q | grep -i "vga1 connected") ]]; then
-    xrandr --output LVDS1 --primary --mode 1024x600 --rotate normal --output VGA1 --mode 1024x768 --rotate normal --right-of LVDS1
+if [[ $(xrandr -q | grep -io "vga1 connected") ]]; then
+    xrandr --output LVDS1 --primary --mode 1024x600 --rotate normal --rate 60.00 --output VGA1 --mode 1024x768 --rotate normal --rate 60.00 --right-of LVDS1
 
     bspc monitor VGA1 -d IV
 #else
