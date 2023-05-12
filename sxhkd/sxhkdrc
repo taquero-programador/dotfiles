@@ -1,7 +1,3 @@
-#
-# wm independent hotkeys
-#
-
 # terminal emulator
 super + Return
 	xfce4-terminal
@@ -30,45 +26,19 @@ super + {_,shift + }w
 super + m
 	bspc desktop -l next
 
-# send the newest marked node to the newest preselected node
-super + y
-	bspc node newest.marked.local -n newest.!automatic.local
-
 # cambia posición a la ventana más grande
 super + g
 	bspc node -s biggest.window
 
-#
-# state/flags
-#
-
-# set the window state
-super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
-
-# set the node flags
-super + ctrl + {m,x,y,z}
-	bspc node -g {marked,locked,sticky,private}
-
-#
-# focus/swap
 #
 
 # cambia la posición de la ventana (win + Shift + h, j, k or l)
 super + {_,shift + }{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
 
-# focus the node for the given path jump
-super + {p,b,comma,period}
-	bspc node -f @{parent,brother,first,second}
-
 # cambia entre ventanas (win + Shift + c)
 super + {_,shift + }c
 	bspc node -f {next,prev}.local.!hidden.window
-
-# focus the next/previous desktop in the current monitor
-super + bracket{left,right}
-	bspc desktop -f {prev,next}.local
 
 # cambia entre monitores (win + Tab) historico
 super + {grave,Tab}
@@ -97,14 +67,6 @@ super + ctrl + {h,j,k,l}
 super + ctrl + {1-9}
 	bspc node -o 0.{1-9}
 
-# cancel the preselection for the focused node
-super + ctrl + space
-	bspc node -p cancel
-
-# cancel the preselection for the focused desktop
-super + ctrl + shift + space
-	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
-
 #
 # move/resize
 #
@@ -126,5 +88,5 @@ super + alt + t
     thunar
 
 # lockscreen
-alt + shift + x
+super + alt + x
     betterlockscreen -l
