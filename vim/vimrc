@@ -15,6 +15,7 @@ set incsearch " search as characters are entered
 set hlsearch " highlight matches
 set autoindent
 set cursorline
+set cursorcolumn
 set showmatch
 set termguicolors
 set runtimepath+=~/.vim_runtime
