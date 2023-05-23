@@ -1,32 +1,82 @@
 #!/bin/bash
 
-mrock=$(rclone lsf pcloud:musica/chidas | wc -l)
-lrock=$(ls ~/Música/javier/chidas | wc -l)
+#set -x
 
-if [[ $mrock -gt $lrock ]]; then
-    notify-send -t 5000 "Chidas music is being updated..."
+init_time=$(date)
+_remote=$(rclone lsf pcloud:musica/chidas | wc -l)
+_localdir=$(ls ~/Música/javier/chidas | wc -l)
+
+sync_cron() {
+    _action=sync
+	if [[ $_remote -gt $_localdir ]]; then
+	    notify-send -t 5000 "Chidas music is being updated..."
+	    curl \
+            -H "Title: Update music in $(uname -sn)" \
+            -H "Priority: urgent" \
+            -d "Chidas is being updated..." \
+            ntfy.sh/change_url &> /dev/null
+        rclone sync -P pcloud:musica/chidas ~/Música/javier/chidas
+	    if [[ $? -eq 0 ]]; then
+            notify-send -t 5000 "Chidas Music" "$(( $_remote-$_localdir )) New song(s)!"
+	    else
+            notify-send -t 5000 "Chidas Music" "Algo salió mal!"
+            _title="Chidas in $(uname -sn)"
+            _message="Algo salió mal!"
+            _status=error
+	    fi
+	else
+	    notify-send -t 5000 "Chidas synchronized" "Chidas is ok!"
+	    exit 0
+	fi
+}
+
+curl_function() {
     curl \
-        -H "Title: Update music in $(uname -sn)" \
+        -H "Title: ${_title:-"Chidas is synchronized $(uname -sn)"}" \
         -H "Priority: urgent" \
-        -d "Chidas is being updated..." \
+        -d "${_message:-"$(( $_remote-$_localdir )) New song(s)"}" \
         ntfy.sh/change_url &> /dev/null
-    proc=$(rclone sync -P pcloud:musica/chidas ~/Música/javier/chidas)
-    if [[ $? -eq 0 ]]; then
-        notify-send -t 5000 "Chidas Music" "$(( $mrock-$lrock )) New song(s)!"
-        title="Chidas is synchronized in $(uname -sn)"
-        message="$(( $mrock-$lrock )) New song(s)!"
-    else
-        notify-send -t 5000 "Chidas Music" "Algo salió mal!"
-        title="Chidas is synchronized in $(uname -sn)"
-        message="Algo salió mal! $proc"
+}
+
+sync_download() {
+    _action=download
+    rclone sync -P pcloud:musica/chidas ~/Música/javier/chidas
+    if [[ ! $? -eq 0 ]]; then
+        _status=error
     fi
+}
+
+sync_upload() {
+    _action=upload
+    rclone sync -P --transfers 1 ~/Música/javier/chidas pcloud:musica:chidas
+    if [[ ! $? -eq 0 ]]; then
+        _status=error
+    fi
+}
+
+_help() {
+    echo -e "\nOptions:"
+    echo -e "\t[--help]: show help."
+    echo -e "\t[--syncron]: sync local with remote (remote->local)."
+    echo -e "\t[--download]: force to sync local with remote (remote->local)."
+    echo -e "\t[--upload]: sync remote with local (local->remote)."
+}
+
+if [[ ! "$1" =~ ^- ]]; then
+    _help
+    exit 1
 else
-    notify-send -t 5000 "Chidas synchronized" "Chidas is ok!"
-    exit 0
+    for opt in "$@"; do
+        case $opt in
+            --help) _help;;
+            --syncron) sync_cron && curl_function;; # sync with cron or normal
+            --download) sync_download;; # force to sync
+            --upload) sync_upload;; # sync local to remote (especial case)
+            *) echo "Invalid option!" && _help;;
+        esac
+    done
 fi
 
-curl \
-    -H "Title: $title" \
-    -H "Priority: urgent" \
-    -d "$message" \
-    ntfy.sh/change_url &> /dev/null
+# schema [_status][sync.{download|upload}] dir datetime conteo-inicial datetime-final conteo-final new-items
+_salida="[${_status:-normal}][sync.${_action}] chidas init:${init_time} before:$_localdir end_init:$(date) after:$(ls ~/Música/javier/chidas | wc -l) NI:$(( $_remote - $_localdir ))"
+logger -p user.info "$_salida"
