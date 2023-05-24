@@ -61,14 +61,14 @@ _help() {
     echo -e "\nOptions:"
     echo -e "\t--help: show help."
     echo -e "\t--syncron: sync remote with local (remote->local)."
-    echo -e "\t--download: force to sync local with remote (remote->local)."
+    echo -e "\t--download: force to sync remote with local (remote->local)."
     echo -e "\t--upload: sync local with remote (local->remote)."
     exit 0
 }
 
 if [[ ! "$1" =~ ^[-]{2} ]]; then
     echo "¡Error!"
-    echo "Type: "$(basename $0)" --help for more information."
+    echo "Type: $(basename $0) --help for more information."
     exit 0
 else
     for opt in "$@"; do
