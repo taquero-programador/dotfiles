@@ -14,7 +14,7 @@ sync_cron() {
             -H "Title: Update music in $(uname -sn)" \
             -H "Priority: urgent" \
             -d "Chidas is being updated..." \
-            ntfy.sh/change_url &> /dev/null
+            ntfy.sh/XlainRoot93 &> /dev/null
         rclone sync -P pcloud:musica/chidas ~/Música/javier/chidas
 	    if [[ $? -eq 0 ]]; then
             notify-send -t 5000 "Chidas Music" "$(( $_remote-$_localdir )) New song(s)!"
@@ -35,7 +35,7 @@ curl_function() {
         -H "Title: ${_title:-"Chidas is synchronized $(uname -sn)"}" \
         -H "Priority: urgent" \
         -d "${_message:-"$(( $_remote-$_localdir )) New song(s)"}" \
-        ntfy.sh/change_url &> /dev/null
+        ntfy.sh/XlainRoot93 &> /dev/null
 }
 
 sync_download() {
@@ -48,23 +48,28 @@ sync_download() {
 
 sync_upload() {
     _action=upload
-    rclone sync -P --transfers 1 ~/Música/javier/chidas pcloud:musica:chidas
+    _remote1=$(rclone lsf pcloud:musica/chidas | wc -l)
+    res_upload=$[ ${_localdir}-${_remote} ]
+    rclone sync -P --transfers 1 ~/Música/javier/chidas pcloud:musica/chidas
     if [[ ! $? -eq 0 ]]; then
         _status=error
     fi
+    _remote2=$(rclone lsf pcloud:musica/chidas | wc -l)
 }
 
 _help() {
     echo -e "\nOptions:"
-    echo -e "\t[--help]: show help."
-    echo -e "\t[--syncron]: sync local with remote (remote->local)."
-    echo -e "\t[--download]: force to sync local with remote (remote->local)."
-    echo -e "\t[--upload]: sync remote with local (local->remote)."
+    echo -e "\t--help: show help."
+    echo -e "\t--syncron: sync remote with local (remote->local)."
+    echo -e "\t--download: force to sync local with remote (remote->local)."
+    echo -e "\t--upload: sync local with remote (local->remote)."
+    exit 0
 }
 
-if [[ ! "$1" =~ ^- ]]; then
-    _help
-    exit 1
+if [[ ! "$1" =~ ^[-]{2} ]]; then
+    echo "¡Error!"
+    echo "Type: "$(basename $0)" --help for more information."
+    exit 0
 else
     for opt in "$@"; do
         case $opt in
@@ -77,6 +82,6 @@ else
     done
 fi
 
-# schema [_status][sync.{download|upload}] dir datetime conteo-inicial datetime-final conteo-final new-items
-_salida="[${_status:-normal}][sync.${_action}] chidas init:${init_time} before:$_localdir end_init:$(date) after:$(ls ~/Música/javier/chidas | wc -l) NI:$(( $_remote - $_localdir ))"
-logger -p user.info "$_salida"
+# schema end_time(logger) [_status][sync.{download|upload}] dir init_time conteo-inicial conteo-final new-items
+_output="[${_status:-normal}][sync.${_action}] chidas init:${init_time} before:${_remote1:-$_localdir} after:${_remote2:-$(ls ~/Música/javier/chidas | wc -l)} NI:${res_upload:-$[ $_remote - $_localdir ]}"
+logger -p user.info "$_output" # send log to /var/log/{messages,syslog}
