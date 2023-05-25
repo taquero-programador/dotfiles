@@ -3,8 +3,8 @@
 #set -x
 
 init_time=$(date)
-_remote=$(rclone lsf pcloud:musica/chidas | wc -l)
-_localdir=$(ls ~/Música/javier/chidas | wc -l)
+_remote=$(rclone lsf $RCHIDAS/chidas | wc -l)
+_localdir=$(ls $PATH_MUSIC/chidas | wc -l)
 
 sync_cron() {
     _action=sync
@@ -14,8 +14,8 @@ sync_cron() {
             -H "Title: Update music in $(uname -sn)" \
             -H "Priority: urgent" \
             -d "Chidas is being updated..." \
-            ntfy.sh/XlainRoot93 &> /dev/null
-        rclone sync -P pcloud:musica/chidas ~/Música/javier/chidas
+            ntfy.sh/$API_NTFY &> /dev/null
+        rclone sync -P $RCHIDAS/chidas $PATH_MUSIC/chidas
 	    if [[ $? -eq 0 ]]; then
             notify-send -t 5000 "Chidas Music" "$(( $_remote-$_localdir )) New song(s)!"
 	    else
@@ -35,12 +35,12 @@ curl_function() {
         -H "Title: ${_title:-"Chidas is synchronized $(uname -sn)"}" \
         -H "Priority: urgent" \
         -d "${_message:-"$(( $_remote-$_localdir )) New song(s)"}" \
-        ntfy.sh/XlainRoot93 &> /dev/null
+        ntfy.sh/$API_NTFY &> /dev/null
 }
 
 sync_download() {
     _action=download
-    rclone sync -P pcloud:musica/chidas ~/Música/javier/chidas
+    rclone sync -P $RCHIDAS/chidas $PATH_MUSIC/chidas
     if [[ ! $? -eq 0 ]]; then
         _status=error
     fi
@@ -48,13 +48,13 @@ sync_download() {
 
 sync_upload() {
     _action=upload
-    _remote1=$(rclone lsf pcloud:musica/chidas | wc -l)
+    _remote1=$(rclone lsf $RCHIDAS/chidas | wc -l)
     res_upload=$[ ${_localdir}-${_remote} ]
-    rclone sync -P --transfers 1 ~/Música/javier/chidas pcloud:musica/chidas
+    rclone sync -P --transfers 1 $PATH_MUSIC/chidas $RCHIDAS/chidas
     if [[ ! $? -eq 0 ]]; then
         _status=error
     fi
-    _remote2=$(rclone lsf pcloud:musica/chidas | wc -l)
+    _remote2=$(rclone lsf $RCHIDAS/chidas | wc -l)
 }
 
 _help() {
@@ -83,5 +83,5 @@ else
 fi
 
 # schema end_time(logger) [_status][sync.{download|upload}] dir init_time conteo-inicial conteo-final new-items
-_output="[${_status:-normal}][sync.${_action}] chidas init:${init_time} before:${_remote1:-$_localdir} after:${_remote2:-$(ls ~/Música/javier/chidas | wc -l)} NI:${res_upload:-$[ $_remote - $_localdir ]}"
+_output="[${_status:-normal}][sync.${_action}] chidas init:${init_time} before:${_remote1:-$_localdir} after:${_remote2:-$(ls $PATH_MUSIC/chidas | wc -l)} NI:${res_upload:-$[ $_remote - $_localdir ]}"
 logger -p user.info "$_output" # send log to /var/log/{messages,syslog}
