@@ -3,8 +3,8 @@
 #set -x
 
 init_time=$(date)
-_remote=$(rclone lsf $RCHIDAS/romanticas | wc -l)
-_localdir=$(ls $PATH_MUSIC/romanticas | wc -l)
+_remote=$(rclone lsf ${RCHIDAS}/romanticas | wc -l)
+_localdir=$(ls ${PATH_MUSIC}/romanticas | wc -l)
 
 sync_cron() {
     _action=sync
@@ -14,14 +14,17 @@ sync_cron() {
             -H "Title: Update music in $(uname -sn)" \
             -H "Priority: urgent" \
             -d "Romanticas is being updated..." \
-            ntfy.sh/$API_NTFY &> /dev/null
-        rclone sync -P $RCHIDAS/romanticas $PATH_MUSIC/romanticas
+            -H "Tags: computer,arrows_counterclockwise" \
+            ntfy.sh/${API_NTFY} &> /dev/null
+        rclone sync -P ${RCHIDAS}/romanticas ${PATH_MUSIC}/romanticas
 	    if [[ $? -eq 0 ]]; then
-            notify-send -t 5000 "Romanticas Music" "$(( $_remote-$_localdir )) New song(s)!"
+            notify-send -t 5000 "Romanticas Music" "$[ ${_remote}-${_localdir} ] New song(s)!"
 	    else
             notify-send -t 5000 "Romanticas Music" "Algo salió mal!"
+            _email=$_EMAIL
             _title="Romanticas in $(uname -sn)"
             _message="Algo salió mal!"
+            _tags=email,warning,skull
             _status=error
 	    fi
 	else
@@ -32,15 +35,17 @@ sync_cron() {
 
 curl_function() {
     curl \
+        -H "Email: $_email" \
         -H "Title: ${_title:-"Romanticas is synchronized $(uname -sn)"}" \
         -H "Priority: urgent" \
-        -d "${_message:-"$(( $_remote-$_localdir )) New song(s)"}" \
-        ntfy.sh/$API_NTFY &> /dev/null
+        -d "${_message:-"$[ ${_remote}-${_localdir} ] New song(s)"}" \
+        -H "Tags: ${_tags:-"computer,white_check_mark"}" \
+        ntfy.sh/${API_NTFY} &> /dev/null
 }
 
 sync_download() {
     _action=download
-    rclone sync -P $RCHIDAS/romanticas $PATH_MUSIC/romanticas
+    rclone sync -P ${RCHIDAS}/romanticas ${PATH_MUSIC}/romanticas
     if [[ ! $? -eq 0 ]]; then
         _status=error
     fi
@@ -48,13 +53,13 @@ sync_download() {
 
 sync_upload() {
     _action=upload
-    _remote1=$(rclone lsf $RCHIDAS/romanticas | wc -l)
+    _remote1=$(rclone lsf ${RCHIDAS}/romanticas | wc -l)
     res_upload=$[ ${_localdir}-${_remote} ]
-    rclone sync -P --transfers 1 $PATH_MUSIC/romanticas $RCHIDAS/romanticas
+    rclone sync -P --transfers 1 ${PATH_MUSIC}/romanticas ${RCHIDAS}/romanticas
     if [[ ! $? -eq 0 ]]; then
         _status=error
     fi
-    _remote2=$(rclone lsf $RCHIDAS/romanticas | wc -l)
+    _remote2=$(rclone lsf ${RCHIDAS}/romanticas | wc -l)
 }
 
 _help() {
@@ -83,5 +88,5 @@ else
 fi
 
 # schema end_time(logger) [_status][sync.{download|upload}] dir init_time conteo-inicial conteo-final new-items
-_output="[${_status:-normal}][sync.${_action}] romanticas init:${init_time} before:${_remote1:-$_localdir} after:${_remote2:-$(ls $PATH_MUSIC/romanticas | wc -l)} NI:${res_upload:-$[ $_remote - $_localdir ]}"
+_output="[${_status:-normal}][sync.${_action}] romanticas init:${init_time} before:${_remote1:-$_localdir} after:${_remote2:-$(ls ${PATH_MUSIC}/romanticas | wc -l)} NI:${res_upload:-$[ ${_remote}- ${_localdir} ]}"
 logger -p user.info "$_output" # send log to /var/log/{messages,syslog}

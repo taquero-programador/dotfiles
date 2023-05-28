@@ -8,8 +8,8 @@ _fil=$(cat boost.txt)
 if [[ $_boost -gt $_fil ]]; then
     rclone copy -P /sdcard/Pictures/Boost megap:pics/reddit && ls /sdcard/Pictures/Boost | wc -l > boost.txt
     if [[ ! $? -eq 0 ]]; then
-        _title="Title: Reddit Local"
-        _message="Rclone backup fail!"
+        _message="Rclone backup is failed!"
+        _tags=warning,skull
     fi
 else
     echo "Nada que hacer."
@@ -17,7 +17,8 @@ else
 fi
 
 curl \
-    -H "$_title" \
+    -H "Title: Reddit local" \
     -H "Priority: urgent" \
     -d "${_message:-"Rclone backup done!"}" \
-    ntfy.sh/$API_NTFY &> /dev/null
+    -H "Tags: ${_tags:-"iphone,white_check_mark"}" \
+    ntfy.sh/${API_NTFY} &> /dev/null

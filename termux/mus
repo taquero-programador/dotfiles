@@ -5,8 +5,8 @@ _dir=/sdcard/Music
 if [[ $(ls -A $_dir) ]]; then
     rclone copy -P --transfers 1 $_dir mega:flac
     if [[ ! $? -eq 0 ]]; then
-        _title="Title: Rclone music rock"
-        _message="Mega music is fail!!!"
+        _message="Mega music is failed!"
+        _tags=warning,skull
     fi
 else
     echo "Nada que hacer."
@@ -14,7 +14,8 @@ else
 fi
 
 curl \
-    -H "$_title" \
+    -H "Title: Rclone music rock" \
     -H "Priority: urgent" \
-    -d "${_message:-"Mega music is done!!!"}" \
-    ntfy.sh/$API_NTFY &> /dev/null
+    -d "${_message:-"Mega music is done!"}" \
+    -H "Tags: ${_tags:-"iphone,white_check_mark"}" \
+    ntfy.sh/${API_NTFY} &> /dev/null
