@@ -1,0 +1,87 @@
+#!/bin/bash
+
+#set -x
+
+init_time=$(date)
+_remote=$(rclone lsf $RROCK | wc -l)
+_localdir=$(ls $PATH_MUSIC/rock-flac | wc -l)
+
+sync_cron() {
+    _action=sync
+	if [[ $_remote -gt $_localdir ]]; then
+	    notify-send -t 5000 "Rock music is being updated..."
+	    curl \
+            -H "Title: Update music in $(uname -sn)" \
+            -H "Priority: urgent" \
+            -d "Rock is being updated..." \
+            ntfy.sh/$API_NTFY &> /dev/null
+        rclone sync -P $RROCK $PATH_MUSIC/rock-flac
+	    if [[ $? -eq 0 ]]; then
+            notify-send -t 5000 "Rock Music" "$(( $_remote-$_localdir )) New song(s)!"
+	    else
+            notify-send -t 5000 "Rock Music" "Algo salió mal!"
+            _title="Rock in $(uname -sn)"
+            _message="Algo salió mal!"
+            _status=error
+	    fi
+	else
+	    notify-send -t 5000 "Rock synchronized" "Rock is ok!"
+	    exit 0
+	fi
+}
+
+curl_function() {
+    curl \
+        -H "Title: ${_title:-"Rock is synchronized $(uname -sn)"}" \
+        -H "Priority: urgent" \
+        -d "${_message:-"$(( $_remote-$_localdir )) New song(s)"}" \
+        ntfy.sh/$API_NTFY &> /dev/null
+}
+
+sync_download() {
+    _action=download
+    rclone sync -P $RROCK $PATH_MUSIC/rock-flac
+    if [[ ! $? -eq 0 ]]; then
+        _status=error
+    fi
+}
+
+sync_upload() {
+    _action=upload
+    _remote1=$(rclone lsf $RROCK | wc -l)
+    res_upload=$[ ${_localdir}-${_remote} ]
+    rclone sync -P --transfers 1 $PATH_MUSIC/rock-flac $RROCK
+    if [[ ! $? -eq 0 ]]; then
+        _status=error
+    fi
+    _remote2=$(rclone lsf $RROCK | wc -l)
+}
+
+_help() {
+    echo -e "\nOptions:"
+    echo -e "\t--help: show help."
+    echo -e "\t--syncron: sync remote with local (remote->local)."
+    echo -e "\t--download: force to sync remote with local (remote->local)."
+    echo -e "\t--upload: sync local with remote (local->remote)."
+    exit 0
+}
+
+if [[ ! "$1" =~ ^[-]{2} ]]; then
+    echo "¡Error!"
+    echo "Type: $(basename $0) --help for more information."
+    exit 0
+else
+    for opt in "$@"; do
+        case $opt in
+            --help) _help;;
+            --syncron) sync_cron && curl_function;; # sync with cron or normal
+            --download) sync_download;; # force to sync
+            --upload) sync_upload;; # sync local to remote (especial case)
+            *) echo "Invalid option!" && _help;;
+        esac
+    done
+fi
+
+# schema end_time(logger) [_status][sync.{download|upload}] dir init_time conteo-inicial conteo-final new-items
+_output="[${_status:-normal}][sync.${_action}] rock-flac init:${init_time} before:${_remote1:-$_localdir} after:${_remote2:-$(ls $PATH_MUSIC/rock-flac | wc -l)} NI:${res_upload:-$[ $_remote - $_localdir ]}"
+logger -p user.info "$_output" # send log to /var/log/{messages,syslog}
