@@ -1,9 +1,9 @@
 #!/bin/bash
 
-dir=/sdcard/Music
+_dir=/sdcard/Music
 
-if [[ $(ls -A $dir) ]]; then
-    rclone copy -P --transfers 1 $dir mega:flac
+if [[ $(ls -A $_dir) ]]; then
+    rclone copy -P --transfers 1 $_dir mega:flac
     if [[ ! $? -eq 0 ]]; then
         _title="Title: Rclone music rock"
         _message="Mega music is fail!!!"
