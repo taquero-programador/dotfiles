@@ -5,7 +5,7 @@
 _boost=$(ls /sdcard/Pictures/Boost | wc -l)
 _fil=$(cat boost.txt)
 
-if [[ $boost -gt $fil ]]; then
+if [[ $_boost -gt $_fil ]]; then
     rclone copy -P /sdcard/Pictures/Boost megap:pics/reddit && ls /sdcard/Pictures/Boost | wc -l > boost.txt
     if [[ ! $? -eq 0 ]]; then
         _title="Title: Reddit Local"
