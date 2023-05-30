@@ -70,7 +70,7 @@ separator-foreground = ${colors.disabled}
 font-0 = "undefined medium:size=10;2"
 font-1 = "feather:style=bold;size=10;2"
 
-modules-left = xworkspaces mpd
+modules-left = xworkspaces mpd script
 ;modules-center =
 modules-right = alsa battery wlan eth date
 
@@ -135,7 +135,7 @@ interval = 1
 ;   <icon-next>
 ;   <icon-seekb>
 ;   <icon-seekf>
-format-online = <toggle> <icon-next> <label-time> <label-song>
+format-online = <toggle> <icon-next> <label-time>
 ;format-playing = ${self.format-online}
 ;format-paused = ${self.format-online}
 ;format-stopped = ${self.format-online}
@@ -152,7 +152,7 @@ format-online = <toggle> <icon-next> <label-time> <label-song>
 ;   %date%
 ;   %title%
 ; Default: %artist% - %title%
-label-song = %{F#FFFFFF}%title:0:20%%{F-}
+;label-song = %{F#FFFFFF}%title:0:20%%{F-}
 
 ; Available tokens:
 ;   %elapsed%
@@ -188,6 +188,15 @@ bar-progress-width = 45
 bar-progress-indicator = |
 bar-progress-fill = ─
 bar-progress-empty = ─
+
+;=========================================================
+[module/script]
+type = custom/script
+exec = ~/.config/polybar/mpc_zscroll.sh
+format = <label>
+label = %{F#FFFFFF}%output%%{F-}
+tail = true
+interval = 0
 
 ;==========================================================
 [module/xwindow]
