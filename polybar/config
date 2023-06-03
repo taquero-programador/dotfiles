@@ -192,7 +192,7 @@ bar-progress-empty = ─
 ;=========================================================
 [module/script]
 type = custom/script
-exec = ~/.config/polybar/mpc_zscroll.sh
+exec = ~/.config/polybar/scripts/mpc_zscroll.sh
 format = <label>
 label = %{F#FFFFFF}%output%%{F-}
 tail = true
