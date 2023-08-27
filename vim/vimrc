@@ -82,6 +82,7 @@ Plug 'pR0Ps/molokai-dark'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'itchyny/vim-gitbranch'
+Plug 'ervandew/supertab'
 call plug#end()
 
 source ~/.vim_runtime/vimrcs/basic.vim
