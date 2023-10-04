@@ -1,9 +1,9 @@
 #!/bin/bash
 
-_dir=/sdcard/Music
+_dir=storage/music
 
 if [[ $(ls -A $_dir) ]]; then
-    rclone copy -P --transfers 1 $_dir mega:flac
+    rclone copy -P --transfers 1 $_dir flac:${1}
     if [[ ! $? -eq 0 ]]; then
         _message="Mega music is failed!"
         _tags=warning,skull
@@ -18,4 +18,4 @@ curl \
     -H "Priority: urgent" \
     -d "${_message:-"Mega music is done!"}" \
     -H "Tags: ${_tags:-"iphone,white_check_mark"}" \
-    ntfy.sh/${API_NTFY} &> /dev/null
+    ntfy.sh/${API_NTFY} > /dev/null 2>&1
