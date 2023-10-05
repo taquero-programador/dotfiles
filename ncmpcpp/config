@@ -9,8 +9,11 @@ visualizer_output_name = "mpd_visualizer"
 visualizer_in_stereo = "yes"
 # buffer_time = 30
 # spectrum/ellipse/wave_filled analyzer or wave
-visualizer_type = "ellipse"
-visualizer_look = ●●
+visualizer_fps = 60
+visualizer_type = "spectrum"
+# visualizer_look = ●● # for use with ellipse
+visualizer_look = "●▐"
+visualizer_color = blue, green, yellow, magenta, red
 
 ### Appearance
 colors_enabled = "yes"
