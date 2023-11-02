@@ -1,11 +1,19 @@
 #!/bin/bash
 
 _dir=storage/music
+carga (){
+    rclone copy --transfers 1 -P $_dir $1
+}
 
-if [[ $(ls -A $_dir) ]]; then
-    rclone copy -P --transfers 1 $_dir flac:${1}
+if [[ $(ls $_dir | wc -l) -gt 1 ]]; then
+    case $1 in
+        rc) carga flac:dir2;;
+        ch) carga dropbox:musica/chida;;
+        ro) carga pcloud:musica/romanticas;;
+        *) echo "Error";;
+    esac
     if [[ ! $? -eq 0 ]]; then
-        _message="Mega music is failed!"
+        _message="Music is failed!"
         _tags=warning,skull
     fi
 else
@@ -14,8 +22,8 @@ else
 fi
 
 curl \
-    -H "Title: Rclone music rock" \
+    -H "Title: Rclone music" \
     -H "Priority: urgent" \
-    -d "${_message:-"Mega music is done!"}" \
+    -d "${_message:-"Music is done!"}" \
     -H "Tags: ${_tags:-"iphone,white_check_mark"}" \
     ntfy.sh/${API_NTFY} > /dev/null 2>&1
