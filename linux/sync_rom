@@ -3,7 +3,7 @@
 #set -x
 
 init_time=$(date)
-_remote=$(rclone lsf ${RCHIDAS}/romanticas | wc -l)
+_remote=$(rclone lsf ${RROM}/romanticas | wc -l)
 _localdir=$(ls ${PATH_MUSIC}/romanticas | wc -l)
 
 sync_cron() {
@@ -16,7 +16,7 @@ sync_cron() {
             -d "Romanticas is being updated..." \
             -H "Tags: computer,arrows_counterclockwise" \
             ntfy.sh/${API_NTFY} &> /dev/null
-        rclone sync -P ${RCHIDAS}/romanticas ${PATH_MUSIC}/romanticas
+        rclone sync -P ${RROM}/romanticas ${PATH_MUSIC}/romanticas
 	    if [[ $? -eq 0 ]]; then
             notify-send -t 5000 "Romanticas Music" "$[ ${_remote}-${_localdir} ] New song(s)!"
 	    else
@@ -45,7 +45,7 @@ curl_function() {
 
 sync_download() {
     _action=download
-    rclone sync -P ${RCHIDAS}/romanticas ${PATH_MUSIC}/romanticas
+    rclone sync -P ${RROM}/romanticas ${PATH_MUSIC}/romanticas
     if [[ ! $? -eq 0 ]]; then
         _status=error
     fi
@@ -53,13 +53,13 @@ sync_download() {
 
 sync_upload() {
     _action=upload
-    _remote1=$(rclone lsf ${RCHIDAS}/romanticas | wc -l)
+    _remote1=$(rclone lsf ${RROM}/romanticas | wc -l)
     res_upload=$[ ${_localdir}-${_remote} ]
-    rclone sync -P --transfers 1 ${PATH_MUSIC}/romanticas ${RCHIDAS}/romanticas
+    rclone sync -P --transfers 1 ${PATH_MUSIC}/romanticas ${RROM}/romanticas
     if [[ ! $? -eq 0 ]]; then
         _status=error
     fi
-    _remote2=$(rclone lsf ${RCHIDAS}/romanticas | wc -l)
+    _remote2=$(rclone lsf ${RROM}/romanticas | wc -l)
 }
 
 _help() {
