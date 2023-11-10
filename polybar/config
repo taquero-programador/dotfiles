@@ -402,6 +402,7 @@ label-disconnected = %{F#707880}%ifname%%{F-}
 inherit = network-base
 interface-type = wireless
 interface = wlp1s0
+interval = 30.0
 ;label-connected = %{F#F0C674}%essid%%{F-} %local_ip%
 label-connected = %{F#FFFFFF}%essid%%{F-}
 format-connected-prefix = %{F#61C766}%{F-}
@@ -428,7 +429,7 @@ type = internal/date
 interval = 1
 
 ; date ISO-8601
-date = %{F#FFFFFF}%y-%b-%d %H:%M %{F-}
+date = %{F#FFFFFF}%Y-%b-%d %H:%M %{F-}
 ;date-alt = %Y-%m-%d %H:%M:%S
 
 label = %date%
