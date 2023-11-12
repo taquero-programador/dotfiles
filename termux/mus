@@ -10,7 +10,7 @@ _check=$(ls $_dir | wc -l)
 if [[ $_check -gt 1 || $_check -eq 1 ]]; then
     case $1 in
         rc) carga flac:dir2;;
-        ch) carga dropbox:musica/chida;;
+        ch) carga dropbox:musica/chidas;;
         ro) carga pcloud:musica/romanticas;;
         *) echo "Error";;
     esac
