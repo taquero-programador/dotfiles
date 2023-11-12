@@ -5,7 +5,9 @@ carga (){
     rclone copy --transfers 1 -P $_dir $1
 }
 
-if [[ $(ls $_dir | wc -l) -gt 1 ]]; then
+_check=$(ls $_dir | wc -l)
+
+if [[ $_check -gt 1 || $_check -eq 1 ]]; then
     case $1 in
         rc) carga flac:dir2;;
         ch) carga dropbox:musica/chida;;
