@@ -2,7 +2,7 @@
 
 #set -x
 
-_boost=$(ls /sdcard/Pictures/Boost | wc -l)
+_boost=$(ls storage/pictures/boost | wc -l)
 _fil=$(cat boost.txt)
 
 if [[ $_boost -gt $_fil ]]; then
