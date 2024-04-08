@@ -116,13 +116,14 @@ alias gitcc="git checkout"
 alias gitps="git push -u origin"
 alias gitm="git merge"
 alias gitp="git pull"
-alias badbox="rclone move -P badbox:badbox mgcrypt:"
-alias pireddit="rclone move -P badbox:pireddit megap:pics/reddit"
-alias tmuxl="tmux new -s master -n tmux"
+# temporal alias
+alias gitrock="rclone lsf -R --files-only flac: | cut -d "/" -f 2 | sort > ~/git/linux_conf/songs/rock.txt"
+alias gitchidas="rclone lsf dropbox:musica/chidas | sort > ~/git/linux_conf/songs/chidas.txt"
+alias gitroma="rclone lsf pcloud:musica/romanticas | sort > ~/git/linux_conf/songs/romanticas.txt"
 alias cbackup="rclone sync -P badbox:local_android/'backups apps' megap:backups"
 alias servedlna="rclone serve dlna --name rclone_dlna --fast-list --dir-cache-time 48h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 2G --buffer-size 1G --drive-chunk-size 512M --vfs-cache-mode full --log-level INFO --bwlimit 8.5M:off --stats 1m $1"
 
-export API_NTFY=api_name
+export API_NTFY=XlainRoot93
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -172,7 +173,9 @@ tmx() {
     fi
 }
 
-crypt() {rclone move -P badbox:badbox/${1} dbcrypt:${1}}
+crypt() {
+    rclone move -P badbox:badbox/${1} dbcrypt:${1}
+}
 
 busca (){grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
 
