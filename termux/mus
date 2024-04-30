@@ -1,21 +1,30 @@
 #!/bin/bash
 
-_dir=storage/music
+_dir=storage/music/Telegram
 carga (){
     rclone copy --transfers 1 -P $_dir $1
 }
 
 _check=$(ls $_dir | wc -l)
 
-if [[ $_check -gt 1 || $_check -eq 1 ]]; then
+_help() {
+    echo -e "\nOptions:"
+    echo -e "\thelp: show help."
+    echo -e "\trc: rock."
+    echo -e "\tch: chidas."
+    echo -e "\tro: romanticas."
+    exit 0
+}
+
+if [[ $_check -gt 0 ]]; then
     case $1 in
-        rc) carga flac:dir2;;
-        ch) carga dropbox:musica/chidas;;
-        ro) carga pcloud:musica/romanticas;;
-        *) echo "Error";;
+        rc) _path="Rock" ; carga flac:dir2;;
+        ch) _path="Chidas" ; carga dropbox:musica/chidas;;
+        ro) _path="Romanticas" ; carga pcloud:musica/romanticas;;
+        *) echo "Invalid option!" && _help;;
     esac
-    if [[ ! $? -eq 0 ]]; then
-        _message="Music is failed!"
+    if [[ ! $? -eq 0 ]]; then 
+        _message="${_path} is failed!"
         _tags=warning,skull
     fi
 else
@@ -24,7 +33,7 @@ else
 fi
 
 curl \
-    -H "Title: Rclone music" \
+    -H "Title: Rclone ${_path}" \
     -H "Priority: urgent" \
     -d "${_message:-"Music is done!"}" \
     -H "Tags: ${_tags:-"iphone,white_check_mark"}" \
