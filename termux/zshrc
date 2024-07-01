@@ -180,4 +180,6 @@ crypt() {
 
 busca (){grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
 
+find1 (){find ~/git -type f -regextype egrep -iregex ".*\.(sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$1" "${@:2:10}" {} \;}
+
 export GPG_TTY=$(tty)
