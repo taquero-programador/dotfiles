@@ -1,6 +1,7 @@
 #!/bin/bash
 
 _dir=storage/music/Telegram
+_mega=mega:music
 carga (){
     rclone copy --transfers 1 -P $_dir $1
 }
@@ -18,9 +19,9 @@ _help() {
 
 if [[ $_check -gt 0 ]]; then
     case $1 in
-        rc) _path="Rock" ; carga flac:dir2;;
-        ch) _path="Chidas" ; carga dropbox:musica/chidas;;
-        ro) _path="Romanticas" ; carga pcloud:musica/romanticas;;
+        rc) _path="Rock" ; carga ${_mega}/rock;;
+        ch) _path="Chidas" ; carga ${_mega}/chidas;;
+        ro) _path="Romanticas" ; carga ${_mega}/romanticas;;
         *) echo "Invalid option!" && _help;;
     esac
     if [[ ! $? -eq 0 ]]; then 
