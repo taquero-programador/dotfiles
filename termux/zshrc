@@ -117,11 +117,8 @@ alias gitps="git push -u origin"
 alias gitm="git merge"
 alias gitp="git pull"
 alias badbox="rclone move -P badbox:badbox mgcrypt:"
-alias gitrock="rclone lsf -R --files-only flac: | cut -d "/" -f 2 | sort > ~/git/linux_conf/songs/rock.txt"
-alias gitchidas="rclone lsf dropbox:musica/chidas | sort > ~/git/linux_conf/songs/chidas.txt"
-alias gitroma="rclone lsf pcloud:musica/romanticas | sort > ~/git/linux_conf/songs/romanticas.txt"
 alias tmuxl="tmux new -s master -n tmux"
-alias cbackup="rclone sync -P badbox:local_android/'backups apps' megap:backups"
+alias cbackup="rclone sync -P badbox:local_android/'backups' mega:backups"
 alias servedlna="rclone serve dlna --name rclone_dlna --fast-list --dir-cache-time 48h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 2G --buffer-size 1G --drive-chunk-size 512M --vfs-cache-mode full --log-level INFO --bwlimit 8.5M:off --stats 1m $1"
 
 export API_NTFY=XlainRoot93
@@ -175,11 +172,28 @@ tmx() {
 }
 
 crypt() {
-    rclone move -P badbox:badbox/${1} dbcrypt:${1}
+    rclone move -P badbox:badbox/${1} mgcrypt:${1}
 }
 
 busca (){grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
 
-find1 (){find ~/git -type f -regextype egrep -iregex ".*\.(sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$1" "${@:2:10}" {} \;}
+find1 (){find "$1" -type f -regextype egrep -iregex ".*\.(sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$2" "${@:3:10}" {} \;}
+
+git_lsf () {
+    rclone lsf mega:music/${1} | grep -Eiv '.*\.lrc$' | sort > ~/git/linux_conf/songs/${1}\.txt
+}
+
+git_append () {
+    if [[ -z $1  ]]; then
+        echo "¡Is empty!"
+    else
+        case $1 in
+            rock) git_lsf $1;;
+            chidas) git_lsf $1;;
+            romanticas) git_lsf $1;;
+            *) echo "¡Invalid option!";;
+        esac
+    fi
+}
 
 export GPG_TTY=$(tty)
