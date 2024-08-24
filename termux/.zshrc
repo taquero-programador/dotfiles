@@ -106,6 +106,7 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases
 alias zshconfig="vim ~/.zshrc"
+alias zshupdate="source ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias tupdate="pkg upgrade -y"
 alias evim="vim .vimrc"
@@ -116,9 +117,8 @@ alias gitcc="git checkout"
 alias gitps="git push -u origin"
 alias gitm="git merge"
 alias gitp="git pull"
-alias badbox="rclone move -P badbox:badbox mgcrypt:"
 alias tmuxl="tmux new -s master -n tmux"
-alias cbackup="rclone sync -P badbox:local_android/'backups' mega:backups"
+alias cbackup="rclone sync -P badbox:local_android mega:android"
 alias servedlna="rclone serve dlna --name rclone_dlna --fast-list --dir-cache-time 48h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 2G --buffer-size 1G --drive-chunk-size 512M --vfs-cache-mode full --log-level INFO --bwlimit 8.5M:off --stats 1m $1"
 
 export API_NTFY=XlainRoot93
@@ -172,18 +172,21 @@ tmx() {
 }
 
 crypt() {
-    rclone move -P badbox:badbox/${1} mgcrypt:${1}
+    arr=("$@")
+    for i in "${arr[@]}"; do
+        echo "Executing mgcrypt:${i}"
+        rclone move -P badbox:badbox/${1} mgcrypt:${1}
+    done
 }
 
 busca (){grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
 
 find1 (){find "$1" -type f -regextype egrep -iregex ".*\.(sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$2" "${@:3:10}" {} \;}
 
-git_lsf () {
-    rclone lsf mega:music/${1} | grep -Eiv '.*\.lrc$' | sort > ~/git/linux_conf/songs/${1}\.txt
-}
+git_lsf (){rclone lsf mega:music/${1} | grep -Eiv '.*\.lrc$' | sort > ~/git/linux_conf/songs/${1}\.txt}
 
 git_append () {
+    # this function call a git_lsf
     if [[ -z $1  ]]; then
         echo "¡Is empty!"
     else
