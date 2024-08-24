@@ -175,7 +175,7 @@ crypt() {
     arr=("$@")
     for i in "${arr[@]}"; do
         echo "Executing mgcrypt:${i}"
-        rclone move -P badbox:badbox/${1} mgcrypt:${1}
+        rclone move -P badbox:badbox/${i} mgcrypt:${i}
     done
 }
 
