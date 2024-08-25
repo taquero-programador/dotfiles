@@ -191,9 +191,7 @@ git_append () {
         echo "¡Is empty!"
     else
         case $1 in
-            rock) git_lsf $1;;
-            chidas) git_lsf $1;;
-            romanticas) git_lsf $1;;
+            rock|chidas|romanticas) git_lsf $1;;
             *) echo "¡Invalid option!";;
         esac
     fi
