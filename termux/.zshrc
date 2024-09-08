@@ -183,15 +183,15 @@ busca (){grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
 
 find1 (){find "$1" -type f -regextype egrep -iregex ".*\.(sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$2" "${@:3:10}" {} \;}
 
-git_lsf (){rclone lsf mega:music/${1} | grep -Eiv '.*\.lrc$' | sort > ~/git/linux_conf/songs/${1}\.txt}
+gitlsf (){rclone lsf mega:music/${1} | grep -Eiv '.*\.lrc$' | sort > ~/git/linux_conf/songs/${1}\.txt}
 
-git_append () {
+gitappend () {
     # this function call a git_lsf
     if [[ -z $1  ]]; then
         echo "¡Is empty!"
     else
         case $1 in
-            rock|chidas|romanticas) git_lsf $1;;
+            rock|chidas|romanticas) gitlsf $1;;
             *) echo "¡Invalid option!";;
         esac
     fi
