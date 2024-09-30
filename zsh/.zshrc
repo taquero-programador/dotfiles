@@ -16,6 +16,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# ZSH_THEME="robbyrussell"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
@@ -69,6 +70,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000000
+SAVEHIST=10000000
+HISTFILESIZE=10000000
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -78,8 +83,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ssh-agent)
+plugins=(git ssh-agent poetry)
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -107,53 +113,81 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 alias zshconfig="vim ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias tupdate="pkg upgrade -y"
-alias evim="vim .vimrc"
-alias upvim="source ~/.vimrc"
+alias upzshrc="source ~/.zshrc"
+alias viedit="vim ~/.vimrc"
+alias actualizar="sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y"
+alias reinicio="systemctl reboot"
+alias apagado="systemctl poweroff"
+alias ngreload="sudo nginx -s reload"
+alias ngcheck="sudo nginx -t"
+alias pypass="python3 ~/.pypass/pass.py --namepass"
+alias covim="vim ~/.vimrc"
+alias sshdres="sudo systemctl restart sshd"
+alias sshstop="sudo sysremctl stop sshd"
+alias sshdstatus="sudo systemctl status sshd"
+alias resnet="sudo systemctl restart NetworkManager"
+alias resmini="sudo systemctl restart minidlna"
+alias susy="sudo systemctl"
+alias ifconfig="sudo ifconfig"
 alias gita="git add ."
 alias gitc="git commit -S -m"
-alias gitcc="git checkout"
-alias gitps="git push -u origin"
-alias gitm="git merge"
+alias gitps="git push origin"
 alias gitp="git pull"
-# temporal alias
-alias gitrock="rclone lsf -R --files-only flac: | cut -d "/" -f 2 | sort > ~/git/linux_conf/songs/rock.txt"
-alias gitchidas="rclone lsf dropbox:musica/chidas | sort > ~/git/linux_conf/songs/chidas.txt"
-alias gitroma="rclone lsf pcloud:musica/romanticas | sort > ~/git/linux_conf/songs/romanticas.txt"
-alias cbackup="rclone sync -P badbox:local_android/'backups apps' megap:backups"
-alias servedlna="rclone serve dlna --name rclone_dlna --fast-list --dir-cache-time 48h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 2G --buffer-size 1G --drive-chunk-size 512M --vfs-cache-mode full --log-level INFO --bwlimit 8.5M:off --stats 1m $1"
-
-export API_NTFY=XlainRoot93
+alias gitm="git merge"
+alias gitcc="git checkout"
+alias torz1="source torsocks on"
+alias torz0="source torsocks off"
+alias cfc="xclip -sel c"
+alias runflask="flask run --host=192.168.0.10"
+alias fmigrate="flask db migrate -m"
+alias fupgrade="flask db upgrade"
+alias fshell="flask shell"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-vit() {
-    tstmux=$(tmux ls &> /dev/null)
-    if [[ $? -eq 0 ]]; then 
-        tmux rename-window "$(basename $PWD):$(basename $1)"
-        vim "$1"
-    else
-        vim $1
-    fi
-}
+export GOROOT=/usr/local/go
+export PATH=${GOROOT}/bin:${PATH}
+export GOPATH=$HOME/go
+export PATH=${GOPATH}/bin:${PATH}
+export PATH=$HOME/.local/bin:${PATH}
+
+export var1="[[:space:]|[:punct:]|-]"
+export FLASK_APP=microblog.py
+export FLASK_DEBUG=False
+export SECRET_KEY='j7/Vg8;C<t8Fd.P>P})v2XcXgahG~H>N'
+export ADMINS=jrangel93@protonmail.com
+
+# dropbox
+export RCHIDAS=dropbox:musica
+# pcloud
+export RROM=pcloud:musica
+# mega
+export RROCK=mega:flac
+# path local
+export PATH_MUSIC=${HOME}/Música/javier
+# url api ntfy.sh
+export API_NTFY=XlainRoot93
+# email
+export _EMAIL=jrangel93@protonmail.com
+
 tmx_call() {
-    tmux new -d -s debian -n vim
+    tmux new -d -s bender -n vim
     tmux new-window -n "git&comamnds" \; split-window -v
     tmux new-window -n ncmpcpp
-    tmux send-keys -t debian:ncmpcpp.0 "ncmpcpp" ENTER
-    tmux a -t debian:ncmpcpp
+    tmux send-keys -t bender:ncmpcpp.0 "ncmpcpp" ENTER
+    tmux a -t bender:ncmpcpp
 }
 
 tmx() {
     # save name of session if exists
-    session_name=$(tmux ls &> /dev/null | grep -io "debian")
+    session_name=$(tmux ls &> /dev/null | grep -io "bender")
     # save if session is now attached
     session_att=$(tmux ls &> /dev/null | grep -io "attached")
     # var saved in $? (code exit)
     test_tmx=$(tmux ls &> /dev/null) # is a same to tmux ls &> /dev/null without $()
 
-    # if $? is not equal to 0, create session
+    # if $? is not equal to 0, create session 
     if [[ ! $? -eq 0 ]]; then
         echo "Creating session..."
         sleep 1
@@ -161,11 +195,11 @@ tmx() {
     # $session_name is not empty
     elif [[ -n $session_name ]]; then
         # two vars compare
-        if [[ $session_name = "debian" && $session_att = "attached" ]]; then
+        if [[ $session_name = "bender" && $session_att = "attached" ]]; then
             # show info
             echo -e "$(tmux ls)\nSession in use! Try: tmux a -t $session_name"
         # session exists, but no attached
-        elif [[ $session_name = "debian" && -z $session_att ]]; then
+        elif [[ $session_name = "bender" && -z $session_att ]]; then
             echo "Attach to $session_name..."
             sleep 1
             tmux a -t $session_name
@@ -173,10 +207,8 @@ tmx() {
     fi
 }
 
-crypt() {
-    rclone move -P badbox:badbox/${1} dbcrypt:${1}
-}
-
-busca (){grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
-
+if type rg &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='rg --files'
+    export FZF_DEFAULT_OPTS='-m'
+fi
 export GPG_TTY=$(tty)
