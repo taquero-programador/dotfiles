@@ -172,20 +172,23 @@ tmx() {
 }
 
 crypt() {
-    arr=("$@")
-    for i in "${arr[@]}"; do
-        echo "Executing mgcrypt:${i}"
-        rclone move -P badbox:badbox/${i} mgcrypt:${i}
+    fun_name=$0
+    arr=($@)
+    for i in ${arr[@]}; do
+        echo "Executing mgcrypt:${i}..."
+        rclone move -P badbox:badbox/${i} dropbox:pics/${i}
+        echo -e "\n"
     done
+    msg_api
 }
 
-busca (){grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
+busca() {grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
 
-find1 (){find "$1" -type f -regextype egrep -iregex ".*\.(sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$2" "${@:3:10}" {} \;}
+find1() {find "$1" -type f -regextype egrep -iregex ".*\.(sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$2" "${@:3:10}" {} \;}
 
-gitlsf (){rclone lsf mega:music/${1} | grep -Eiv '.*\.lrc$' | sort > ~/git/linux_conf/songs/${1}\.txt}
+gitlsf() {rclone lsf mega:music/${1} | grep -Eiv '.*\.lrc$' | sort > ~/git/linux_conf/songs/${1}\.txt}
 
-gitappend () {
+gitappend() {
     # this function call a git_lsf
     if [[ -z $1  ]]; then
         echo "¡Is empty!"
@@ -195,6 +198,14 @@ gitappend () {
             *) echo "¡Invalid option!";;
         esac
     fi
+}
+
+msg_api() {
+    curl \
+    -H "Title: ${fun_name}" \
+    -H "Priority: Urgent" \
+    -d "Done!" \
+    ntfy.sh/${API_NTFY} > /dev/null 2>&1
 }
 
 export GPG_TTY=$(tty)
