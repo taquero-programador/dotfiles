@@ -6,7 +6,7 @@ _boost=$(ls storage/pictures/boost | wc -l)
 _fil=$(cat boost.txt)
 
 if [[ $_boost -gt $_fil ]]; then
-    rclone copy -P /sdcard/Pictures/Boost mega:pics/reddit && ls /sdcard/Pictures/Boost | wc -l > boost.txt
+    rclone copy -P /sdcard/Pictures/Boost mega:img/reddit && ls /sdcard/Pictures/Boost | wc -l > boost.txt
     if [[ ! $? -eq 0 ]]; then
         _message="Rclone backup is failed!"
         _tags=warning,skull
