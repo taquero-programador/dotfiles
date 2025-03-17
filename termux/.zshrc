@@ -208,4 +208,9 @@ msg_api() {
     ntfy.sh/${API_NTFY} > /dev/null 2>&1
 }
 
+pocox6() {
+   fun_name=$0 
+    rclone sync -P --transfers 1 storage/dcim/Camera mega:img/pocox6 && msg_api
+}
+
 export GPG_TTY=$(tty)
