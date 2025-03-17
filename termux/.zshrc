@@ -209,7 +209,7 @@ msg_api() {
 }
 
 pocox6() {
-   fun_name=$0 
+    fun_name=$0
     rclone sync -P --transfers 1 storage/dcim/Camera mega:img/pocox6 && msg_api
 }
 
