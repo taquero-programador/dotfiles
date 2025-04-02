@@ -210,7 +210,10 @@ msg_api() {
 
 pocox6() {
     fun_name=$0
-    rclone sync -P --transfers 1 storage/dcim/Camera mega:img/pocox6 && msg_api
+    for dir in Camera Screenshots ScreenRecorder; do
+        rclone copy -P --transfers 1 storage/dcim/${dir} mega:img/pocox6/${dir}
+    done
+    msg_api
 }
 
 export GPG_TTY=$(tty)
