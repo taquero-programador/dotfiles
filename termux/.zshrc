@@ -216,4 +216,8 @@ pocox6() {
     msg_api
 }
 
+termux_back() {
+    tar -cvzf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files ./home ./usr
+}
+
 export GPG_TTY=$(tty)
