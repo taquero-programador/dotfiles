@@ -149,8 +149,6 @@ alias cbackup="rclone sync -P badbox:local_android mega:android"
 
 export API_NTFY=XlainRoot93
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 vit() {
     tstmux=$(tmux ls &> /dev/null)
@@ -261,7 +259,6 @@ opdl() {
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-export GPG_TTY=$(tty)
 export GPG_TTY=$(tty)
 
 # >>> juliaup initialize >>>
