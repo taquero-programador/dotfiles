@@ -217,7 +217,12 @@ crypt() {
 
 busca() {grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
 
-find1() {find "$1" -type f -regextype egrep -iregex ".*\.(sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$2" "${@:3:10}" {} \;}
+# old
+# {} \; exec the command for each file, {} + per group (fast)
+#find1() {find "$1" -type f -regextype egrep -iregex ".*\.(csv|json|sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$2" "${@:3:10}" {} \;}
+
+# new version
+find1() {find "$1" -type f ! -iname "*.ipynb" -exec grep --color=always -"$2" "${@:3:10}" {} +}
 
 gitlsf() {rclone lsf mega:music/${1} | grep -Eiv '.*\.lrc$' | sort > ~/git/linux_conf/songs/${1}\.txt}
 
