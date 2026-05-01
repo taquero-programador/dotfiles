@@ -123,8 +123,6 @@ alias servedlna="rclone serve dlna --name rclone_dlna --fast-list --dir-cache-ti
 
 export API_NTFY=XlainRoot93
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 vit() {
     tstmux=$(tmux ls &> /dev/null)
@@ -176,7 +174,16 @@ crypt() {
     arr=($@)
     for i in ${arr[@]}; do
         echo "Executing mgcrypt:${i}..."
-        rclone move -P badbox:badbox/${i} dropbox:pics/${i}
+        rclone move -P \
+            --transfers 4 \
+            --checkers 8 \
+            --contimeout 60s \
+            --retries 3 \
+            --low-level-retries 10 \
+            --stats 1s \
+            --stats-file-name-length 0 \
+            --fast-list \
+            badbox:badbox/${i} dropbox:pics/${i}
         echo -e "\n"
     done
     msg_api
@@ -184,7 +191,12 @@ crypt() {
 
 busca() {grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
 
-find1() {find "$1" -type f -regextype egrep -iregex ".*\.(sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$2" "${@:3:10}" {} \;}
+# old
+# {} \; exec the command for each file, {} + per group (fast)
+#find1() {find "$1" -type f -regextype egrep -iregex ".*\.(csv|json|sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$2" "${@:3:10}" {} \;}
+
+# new version
+find1() {find "$1" -type f ! -iname "*.ipynb" -exec grep --color=always -"$2" "${@:3:10}" {} +}
 
 gitlsf() {rclone lsf mega:music/${1} | grep -Eiv '.*\.lrc$' | sort > ~/git/linux_conf/songs/${1}\.txt}
 
@@ -202,7 +214,7 @@ gitappend() {
 
 msg_api() {
     curl \
-    -H "Title: ${fun_name}" \
+    -H "Title: ${@:-fun_name}" \
     -H "Priority: Urgent" \
     -d "Done!" \
     ntfy.sh/${API_NTFY} > /dev/null 2>&1
@@ -220,4 +232,10 @@ termux_back() {
     tar -cvzf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files ./home ./usr
 }
 
+opdl() {
+    python orpheus.py -lr musixmatch "${1}"
+}
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export GPG_TTY=$(tty)
