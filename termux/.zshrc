@@ -121,7 +121,11 @@ alias tmuxl="tmux new -s master -n tmux"
 alias cbackup="rclone sync -P badbox:local_android mega:android"
 alias servedlna="rclone serve dlna --name rclone_dlna --fast-list --dir-cache-time 48h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 2G --buffer-size 1G --drive-chunk-size 512M --vfs-cache-mode full --log-level INFO --bwlimit 8.5M:off --stats 1m $1"
 
+# --- ntfy ---
 export API_NTFY=XlainRoot93
+
+# --- difft ----
+export DFT_SKIP_UNCHANGED=true
 
 
 vit() {
@@ -234,6 +238,10 @@ termux_back() {
 
 opdl() {
     python orpheus.py -lr musixmatch "${1}"
+}
+
+genpass() {
+    pwgen -cnys1 $1 > $2 | cat
 }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
