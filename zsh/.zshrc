@@ -83,7 +83,8 @@ HISTFILESIZE=10000000
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ssh-agent zsh-autosuggestions)
+#plugins=(git ssh-agent zsh-autosuggestions)
+plugins=(git zsh-autosuggestions)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#00FF00,bg=bold,underline"
 
 source $ZSH/oh-my-zsh.sh
@@ -146,10 +147,19 @@ alias gitm="git merge"
 alias gitp="git pull"
 alias tmuxl="tmux new -s master -n tmux"
 alias cbackup="rclone sync -P badbox:local_android mega:android"
+alias difftc="DFT_CHECK_ONLY=true difft"
 
+# --- ntfy api ---
 export API_NTFY=XlainRoot93
 
+# --- difft ---
+export DFT_DISPLAY=side-by-side-show-both
+export DFT_SKIP_UNCHANGED=true
+export DFT_COLOR=always
+export DFT_PARSE_ERROR_LIMIT=2
 
+
+# --- functions ---
 vit() {
     tstmux=$(tmux ls &> /dev/null)
     if [[ $? -eq 0 ]]; then 
@@ -262,6 +272,10 @@ opdl() {
     python orpheus.py -lr musixmatch "${1}"
 }
 
+genpass() {
+    pwgen -cnys1 $1 > $2 | cat
+}
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export GPG_TTY=$(tty)
@@ -277,6 +291,9 @@ export PATH
 
 # Created by `pipx` on 2025-09-20 12:05:19
 export PATH="$PATH:/home/cthulhu/.local/bin"
+
+# --- Bitwarden ssh agent ---
+export SSH_AUTH_SOCK=/home/cthulhu/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
