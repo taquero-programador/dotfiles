@@ -120,14 +120,19 @@ alias gitp="git pull"
 alias tmuxl="tmux new -s master -n tmux"
 alias cbackup="rclone sync -P badbox:local_android mega:android"
 alias servedlna="rclone serve dlna --name rclone_dlna --fast-list --dir-cache-time 48h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 2G --buffer-size 1G --drive-chunk-size 512M --vfs-cache-mode full --log-level INFO --bwlimit 8.5M:off --stats 1m $1"
+alias difftc="DFT_CHECK_ONLY=true difft"
 
 # --- ntfy ---
 export API_NTFY=XlainRoot93
 
 # --- difft ----
+export DFT_DISPLAY=side-by-side-show-both
 export DFT_SKIP_UNCHANGED=true
+export DFT_COLOR=always
+export DFT_PARSE_ERROR_LIMIT=2
 
 
+# --- functions ---
 vit() {
     tstmux=$(tmux ls &> /dev/null)
     if [[ $? -eq 0 ]]; then 
