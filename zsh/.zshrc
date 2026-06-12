@@ -134,6 +134,7 @@ alias runflask="flask run --host=192.168.0.10"
 alias fmigrate="flask db migrate -m"
 alias fupgrade="flask db upgrade"
 alias fshell="flask shell"
+alias apt="PAGER=cat apt"
 # termux
 alias zshconfig="vim ~/.zshrc"
 alias zshupdate="source ~/.zshrc"
