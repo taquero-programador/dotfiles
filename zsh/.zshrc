@@ -287,6 +287,8 @@ export GPG_TTY=$(tty)
 
 path=('/home/cthulhu/.juliaup/bin' $path)
 export PATH
+# Tab completion for juliaup and julia channel selection
+[ -f "/home/cthulhu/.julia/juliaup/completions/zsh.zsh" ] && source "/home/cthulhu/.julia/juliaup/completions/zsh.zsh"
 
 # <<< juliaup initialize <<<
 
@@ -294,7 +296,7 @@ export PATH
 export PATH="$PATH:/home/cthulhu/.local/bin"
 
 # --- Bitwarden ssh agent ---
-export SSH_AUTH_SOCK=/home/cthulhu/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock
+export SSH_AUTH_SOCK=/home/cthulhu/.bitwarden-ssh-agent.sock
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
