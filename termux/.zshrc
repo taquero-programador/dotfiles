@@ -246,7 +246,10 @@ opdl() {
 }
 
 genpass() {
-    pwgen -cnys1 $1 > $2 | cat
+    if [[ ! -d access ]]; then
+        mkdir -v access
+    fi
+    pwgen -cnys1 $1 > ~/access/${2} | cat
 }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
