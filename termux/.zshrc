@@ -232,7 +232,16 @@ msg_api() {
 pocox6() {
     fun_name=$0
     for dir in Camera Screenshots ScreenRecorder; do
-        rclone copy -P --transfers 1 storage/dcim/${dir} mega:img/pocox6/${dir}
+        rclone copy -P \
+            --transfers 4 \
+            --checkers 8 \
+            --contimeout 60s \
+            --retries 3 \
+            --low-level-retries 10 \
+            --stats 1s \
+            --stats-file-name-length 0 \
+            --fast-list \
+            storage/dcim/${dir} mega:img/pocox6/${dir}
     done
     msg_api
 }
