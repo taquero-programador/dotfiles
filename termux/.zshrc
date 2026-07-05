@@ -195,7 +195,7 @@ crypt() {
             badbox:badbox/${i} dropbox:pics/${i}
         echo -e "\n"
     done
-    msg_api
+    msg_api $fun_name
 }
 
 # old
@@ -227,7 +227,7 @@ pocox6() {
             --fast-list \
             storage/dcim/${dir} mega:img/pocox6/${dir}
     done
-    msg_api
+    msg_api $fun_name
 }
 
 termux_back() {
