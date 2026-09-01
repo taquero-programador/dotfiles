@@ -226,16 +226,12 @@ crypt() {
     msg_api
 }
 
-busca() {grep -Ehin "$1" ~/git/linux_conf/songs/*.txt}
-
 # old
 # {} \; exec the command for each file, {} + per group (fast)
 #find1() {find "$1" -type f -regextype egrep -iregex ".*\.(csv|json|sh|py|txt|md|([a-z|[:punct:]]+(rc|conf)))$" -exec grep --color=always -"$2" "${@:3:10}" {} \;}
 
 # new version
-find1() {find "$1" -type f ! -iname "*.ipynb" -exec grep --color=always -"$2" "${@:3:10}" {} +}
-
-gitlsf() {rclone lsf mega:music/${1} | grep -Eiv '.*\.lrc$' | sort > ~/git/linux_conf/songs/${1}\.txt}
+find1() { find "$1" -type f ! -iname "*.ipynb" -exec grep --color=always -"$2" "${@:3:10}" {} +; }
 
 gitappend() {
     # this function call a git_lsf
@@ -265,13 +261,9 @@ pocox6() {
     msg_api
 }
 
-termux_back() {
-    tar -cvzf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files ./home ./usr
-}
+termux_back() { tar -cvzf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files ./home ./usr; }
 
-opdl() {
-    python orpheus.py -lr musixmatch "${1}"
-}
+opdl() { python orpheus.py -lr musixmatch "${1}"; }
 
 genpass() {
     if [[ ! -d ~/access ]];then
