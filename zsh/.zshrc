@@ -307,3 +307,4 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+autoload -U compinit; compinit
